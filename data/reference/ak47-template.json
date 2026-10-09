@@ -1,0 +1,276 @@
+{
+  "source": "Recoil Master CS2, Workshop 3100869952, locally installed package",
+  "status": "reference template coordinates; not yet calibrated angle data",
+  "points": [
+    {
+      "shot": 1,
+      "templateOrigin": [
+        0.0,
+        -40.0,
+        -72.0
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 2,
+      "templateOrigin": [
+        0.0,
+        -39.523273,
+        -72.995316
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 3,
+      "templateOrigin": [
+        0.0,
+        -40.001381,
+        -77.669785
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 4,
+      "templateOrigin": [
+        0.0,
+        -39.46534,
+        -84.512482
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 5,
+      "templateOrigin": [
+        0.0,
+        -39.152245,
+        -92.249481
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 6,
+      "templateOrigin": [
+        0.0,
+        -42.081951,
+        -98.939812
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 7,
+      "templateOrigin": [
+        0.0,
+        -43.981422,
+        -105.730293
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 8,
+      "templateOrigin": [
+        0.0,
+        -46.961784,
+        -111.087639
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 9,
+      "templateOrigin": [
+        0.0,
+        -43.046951,
+        -113.567825
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 10,
+      "templateOrigin": [
+        0.0,
+        -33.52544,
+        -113.524323
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 11,
+      "templateOrigin": [
+        0.0,
+        -28.229954,
+        -113.295921
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 12,
+      "templateOrigin": [
+        0.0,
+        -31.230736,
+        -116.456718
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 13,
+      "templateOrigin": [
+        0.0,
+        -27.748062,
+        -117.805069
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 14,
+      "templateOrigin": [
+        0.0,
+        -21.790157,
+        -114.699188
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 15,
+      "templateOrigin": [
+        0.0,
+        -20.685398,
+        -116.85495
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 16,
+      "templateOrigin": [
+        0.0,
+        -30.395039,
+        -116.230431
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 17,
+      "templateOrigin": [
+        0.0,
+        -34.71331,
+        -118.728134
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 18,
+      "templateOrigin": [
+        0.0,
+        -37.873608,
+        -121.127594
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 19,
+      "templateOrigin": [
+        0.0,
+        -44.179413,
+        -119.686844
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 20,
+      "templateOrigin": [
+        0.0,
+        -51.908432,
+        -118.685883
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 21,
+      "templateOrigin": [
+        0.0,
+        -47.031906,
+        -117.19342
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 22,
+      "templateOrigin": [
+        0.0,
+        -48.589859,
+        -118.747482
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 23,
+      "templateOrigin": [
+        0.0,
+        -47.097435,
+        -121.05101
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 24,
+      "templateOrigin": [
+        0.0,
+        -44.784805,
+        -120.66613
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 25,
+      "templateOrigin": [
+        0.0,
+        -49.349213,
+        -121.006042
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 26,
+      "templateOrigin": [
+        0.0,
+        -50.574108,
+        -119.882172
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 27,
+      "templateOrigin": [
+        0.0,
+        -46.164268,
+        -121.289429
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 28,
+      "templateOrigin": [
+        0.0,
+        -38.792152,
+        -121.695625
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 29,
+      "templateOrigin": [
+        0.0,
+        -27.886742,
+        -116.006393
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    },
+    {
+      "shot": 30,
+      "templateOrigin": [
+        0.0,
+        -24.215769,
+        -117.041916
+      ],
+      "parent": "@rm.ghosthair.pattern_set.0_weapon_ak47_base"
+    }
+  ]
+}

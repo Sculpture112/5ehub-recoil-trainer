@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "mapId": "3086023598",
+  "version": "2026.10.10-integrated-6",
+  "baseVolumes": {
+    "3086023598_000.vpk": "de57c9fdd53fb1ee5ea5a79b24f7bb1e4435e6c71950d589e1334d1f7a86d7a5",
+    "3086023598_001.vpk": "40ad3091c3c2785737a7c7b1b3920c3b3d20bfe5ef4bca20a905a12c9f78b064"
+  },
+  "originalDirSha256": "929b4c05bbd258d0b6360512a280a2181f7f47f54915abfb798368e8add4771e",
+  "patchDirSha256": "85669265ba8c2845fac17f663db3319e59006b921d7378108ff433b49a7a9c28",
+  "patchDataSha256": "f4f3c7cedc56963b6ace5d2fc6ef24fddb4bb309384bba2a78573072459bd29c",
+  "weapons": {
+    "AK-47": 30,
+    "M4A1-S": 20,
+    "M4A4": 30,
+    "咖喱（Galil AR）": 35,
+    "FAMAS（全自动）": 25,
+    "AUG": 30,
+    "SG 553": 30,
+    "MAC-10": 30,
+    "MP9": 30,
+    "MP7": 30,
+    "MP5-SD": 30,
+    "UMP-45": 25,
+    "P90": 50,
+    "PP-Bizon": 64
+  },
+  "weaponProfiles": {
+    "weapon_ak47": 30,
+    "weapon_m4a1_silencer": 20,
+    "weapon_m4a1": 30,
+    "weapon_galilar": 35,
+    "weapon_famas": 25,
+    "weapon_aug": 30,
+    "weapon_aug_scoped": 30,
+    "weapon_sg556": 30,
+    "weapon_sg556_scoped": 30,
+    "weapon_mac10": 30,
+    "weapon_mp9": 30,
+    "weapon_mp7": 30,
+    "weapon_mp5sd": 30,
+    "weapon_ump45": 25,
+    "weapon_p90": 50,
+    "weapon_bizon": 64
+  },
+  "excludedWeapons": [
+    "weapon_cz75a"
+  ],
+  "defaults": {
+    "guide": true,
+    "screenShake": false,
+    "autoAim": false,
+    "display": "world",
+    "drawingVersion": 2,
+    "guideWhen": "always"
+  },
+  "drawingVersions": {
+    "1": "original all-weapons-2 screen renderer",
+    "2": "current calibrated world renderer"
+  },
+  "guideModes": [
+    "fire",
+    "always",
+    "visible"
+  ],
+  "helper": {
+    "path": "helper/5EHubAssist.exe",
+    "sha256": "b4893ae7ef1bb242567a8ec0f45a1bf63b38520c2f9a2bc96a720161b71a3e02",
+    "port": 29000,
+    "requiresInstalledPython": false,
+    "purpose": "native camera cue and real screen-shake switch synchronization"
+  },
+  "displayScaling": "engine-projected world guides; no manual resolution matching required",
+  "knownMaps": [
+    {
+      "label": "2026-09-29 版 5EHub",
+      "date": "2026-09-29",
+      "baseVolumes": {
+        "3086023598_000.vpk": "6f4787b0a3c547db3baad0e7116cdc8440b59232140a6947346bc7fdececfa0b",
+        "3086023598_001.vpk": "e4f9f8ac256a75b2f6a1015e6699d14a6afedf86e82e87209397d0630b7175b3"
+      }
+    },
+    {
+      "label": "2026-10-09 版 5EHub",
+      "date": "2026-10-09",
+      "baseVolumes": {
+        "3086023598_000.vpk": "de57c9fdd53fb1ee5ea5a79b24f7bb1e4435e6c71950d589e1334d1f7a86d7a5",
+        "3086023598_001.vpk": "40ad3091c3c2785737a7c7b1b3920c3b3d20bfe5ef4bca20a905a12c9f78b064"
+      }
+    }
+  ],
+  "legacyScreenViewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "previousMaps": [
+    {
+      "originalDirSha256": "d140d2845e5f42b9710352b298032963090c2d9ed4d83c1d04f8a4ad52fae77e",
+      "patches": [
+        {
+          "patchDirSha256": "271e1b993e72b5a74a04160cbb4f841183b5f66fcfa25e2dd79b74444035de5d",
+          "patchDataSha256": "0a9fa262419e077dc77bef2fd48257167eac95d99210e7f0ec8e707d9f123451"
+        },
+        {
+          "patchDirSha256": "43fd6ec567448abea01433121c1e7938da4940471bb514503df7c835fed4b5b4",
+          "patchDataSha256": "f0f79bd4b47b1015ddb79c3c4889da3064ff7891226178c34fe3b516e5342d7a"
+        },
+        {
+          "patchDirSha256": "a60750e5ae8b5fe9e507640b5b9c3e62747965466a076cca0f0c1f7978456822",
+          "patchDataSha256": "38ca0e17f104e2e0b94eef5a671280bedfd45e43308e6891e5fd633c58ab68b6"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+* text=auto
+installer/** -text
+release/manifest.json -text

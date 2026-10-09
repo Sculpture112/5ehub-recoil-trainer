@@ -1,0 +1,13 @@
+/build/
+/dist/
+/tools/vendor/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.log
+*.dmp
+*.vpk
+*.vjs_c
+*.exe
+*.zip

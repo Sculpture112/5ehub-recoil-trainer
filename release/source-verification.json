@@ -1,0 +1,10 @@
+{
+  "version": "2026.10.10-integrated-6",
+  "zipSha256": "0f1d3c886c616487973f85550240def2cc9a593cb3001ce036b85f8eee6c7d6a",
+  "helperMainBytecodeMatches": true,
+  "bytecodeComparison": "Executable code, constants and exception tables; excludes source paths and line metadata",
+  "unpublishedLifecycleChangesIncluded": false,
+  "scriptPayloadSha256": "8c209837c404e9f02512614c35525f7328989a7a08bddc634590eadf92a461f4",
+  "mapSourceMatchesZip": true,
+  "mapSourceSha256": "aade6ff3e2d035c00f58e25bbf5a9ef954127ef4cd320eb5f36e6fecaa6d0e7f"
+}

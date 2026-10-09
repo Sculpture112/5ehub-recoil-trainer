@@ -1,0 +1,18 @@
+[
+  {
+    "label": "2026-09-29 版 5EHub",
+    "date": "2026-09-29",
+    "baseVolumes": {
+      "3086023598_000.vpk": "6f4787b0a3c547db3baad0e7116cdc8440b59232140a6947346bc7fdececfa0b",
+      "3086023598_001.vpk": "e4f9f8ac256a75b2f6a1015e6699d14a6afedf86e82e87209397d0630b7175b3"
+    }
+  },
+  {
+    "label": "2026-10-09 版 5EHub",
+    "date": "2026-10-09",
+    "baseVolumes": {
+      "3086023598_000.vpk": "de57c9fdd53fb1ee5ea5a79b24f7bb1e4435e6c71950d589e1334d1f7a86d7a5",
+      "3086023598_001.vpk": "40ad3091c3c2785737a7c7b1b3920c3b3d20bfe5ef4bca20a905a12c9f78b064"
+    }
+  }
+]

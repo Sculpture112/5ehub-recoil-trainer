@@ -1,0 +1,148 @@
+{
+  "source": "RecoilMaster native pattern_set entities + local CS2 scripts/weapons.vdata",
+  "weaponStatsSha256": "c97e58cd9f8fa0cd45b09bbb8116d5da8a108de61d5241dfd6c559d8a7c6e333",
+  "profiles": [
+    {
+      "key": "weapon_ak47",
+      "nativeWeapon": "weapon_ak47",
+      "label": "AK-47",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_m4a1_silencer",
+      "nativeWeapon": "weapon_m4a1_silencer",
+      "label": "M4A1-S",
+      "shots": 20,
+      "scoped": false,
+      "silenced": true
+    },
+    {
+      "key": "weapon_m4a1",
+      "nativeWeapon": "weapon_m4a1",
+      "label": "M4A4",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_galilar",
+      "nativeWeapon": "weapon_galilar",
+      "label": "咖喱（Galil AR）",
+      "shots": 35,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_famas",
+      "nativeWeapon": "weapon_famas",
+      "label": "FAMAS（全自动）",
+      "shots": 25,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_aug",
+      "nativeWeapon": "weapon_aug",
+      "label": "AUG",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_aug_scoped",
+      "nativeWeapon": "weapon_aug",
+      "label": "AUG（开镜）",
+      "shots": 30,
+      "scoped": true,
+      "silenced": false,
+      "fov4by3": 45
+    },
+    {
+      "key": "weapon_sg556",
+      "nativeWeapon": "weapon_sg556",
+      "label": "SG 553",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_sg556_scoped",
+      "nativeWeapon": "weapon_sg556",
+      "label": "SG 553（开镜）",
+      "shots": 30,
+      "scoped": true,
+      "silenced": false,
+      "fov4by3": 45
+    },
+    {
+      "key": "weapon_mac10",
+      "nativeWeapon": "weapon_mac10",
+      "label": "MAC-10",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_mp9",
+      "nativeWeapon": "weapon_mp9",
+      "label": "MP9",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_mp7",
+      "nativeWeapon": "weapon_mp7",
+      "label": "MP7",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_mp5sd",
+      "nativeWeapon": "weapon_mp5sd",
+      "label": "MP5-SD",
+      "shots": 30,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_ump45",
+      "nativeWeapon": "weapon_ump45",
+      "label": "UMP-45",
+      "shots": 25,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_p90",
+      "nativeWeapon": "weapon_p90",
+      "label": "P90",
+      "shots": 50,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_bizon",
+      "nativeWeapon": "weapon_bizon",
+      "label": "PP-Bizon",
+      "shots": 64,
+      "scoped": false,
+      "silenced": false
+    },
+    {
+      "key": "weapon_cz75a",
+      "nativeWeapon": "weapon_cz75a",
+      "label": "CZ75-Auto",
+      "shots": 12,
+      "scoped": false,
+      "silenced": false
+    }
+  ],
+  "excludedProfiles": [
+    "weapon_cz75a"
+  ],
+  "exclusionReason": "User requested skipping CZ75 for this build."
+}
