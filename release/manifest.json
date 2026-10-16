@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "mapId": "3086023598",
-  "version": "2026.10.10-integrated-6",
+  "version": "2026.10.16-integrated-12-adaptive",
   "baseVolumes": {
-    "3086023598_000.vpk": "de57c9fdd53fb1ee5ea5a79b24f7bb1e4435e6c71950d589e1334d1f7a86d7a5",
-    "3086023598_001.vpk": "40ad3091c3c2785737a7c7b1b3920c3b3d20bfe5ef4bca20a905a12c9f78b064"
+    "3086023598_000.vpk": "df9d094217f55c8fc089e702bbb124b7cf34857a301f55557f31af3e8cd52050",
+    "3086023598_001.vpk": "2c41d6993fbf4371993324dbf88dda73bb12323a4fcebe46580323b4076ca250"
   },
-  "originalDirSha256": "929b4c05bbd258d0b6360512a280a2181f7f47f54915abfb798368e8add4771e",
-  "patchDirSha256": "85669265ba8c2845fac17f663db3319e59006b921d7378108ff433b49a7a9c28",
-  "patchDataSha256": "f4f3c7cedc56963b6ace5d2fc6ef24fddb4bb309384bba2a78573072459bd29c",
+  "originalDirSha256": "37a225da06e9d092771a7116f56751cbac10f89720bc4b5768c32a888140fe96",
+  "patchDirSha256": "911caac6b910018beece55a6f4cabfae93fb1ecff176481faee76b44704bb908",
+  "patchDataSha256": "56aff4deb7f2b8a849661516e41052cb19fbc37750ced79cc3154adb595adc6d",
   "weapons": {
     "AK-47": 30,
     "M4A1-S": 20,
@@ -23,7 +23,8 @@
     "MP5-SD": 30,
     "UMP-45": 25,
     "P90": 50,
-    "PP-Bizon": 64
+    "PP-Bizon": 64,
+    "双枪（Dual Berettas）": 30
   },
   "weaponProfiles": {
     "weapon_ak47": 30,
@@ -41,7 +42,8 @@
     "weapon_mp5sd": 30,
     "weapon_ump45": 25,
     "weapon_p90": 50,
-    "weapon_bizon": 64
+    "weapon_bizon": 64,
+    "weapon_elite": 30
   },
   "excludedWeapons": [
     "weapon_cz75a"
@@ -52,11 +54,12 @@
     "autoAim": false,
     "display": "world",
     "drawingVersion": 2,
-    "guideWhen": "always"
+    "guideWhen": "always",
+    "botInvincible": false
   },
   "drawingVersions": {
     "1": "original all-weapons-2 screen renderer",
-    "2": "current calibrated world renderer"
+    "2": "fixed calibrated world cues for automatic weapons; live recoil and camera recovery only for Dual Berettas"
   },
   "guideModes": [
     "fire",
@@ -65,10 +68,11 @@
   ],
   "helper": {
     "path": "helper/5EHubAssist.exe",
-    "sha256": "b4893ae7ef1bb242567a8ec0f45a1bf63b38520c2f9a2bc96a720161b71a3e02",
+    "sha256": "9e1c3f7e6427f03dae1dda4bd285d924560ba019f221bebe2fbf951b268ec648",
     "port": 29000,
     "requiresInstalledPython": false,
-    "purpose": "native camera cue and real screen-shake switch synchronization"
+    "purpose": "native camera cue, real screen-shake switch synchronization and event-driven native Dual Berettas recoil snapshots",
+    "lifecycle": "Fresh startup echo and map proof; retry unavailable startup console; ignore Bot kick messages; exit on local player departure or map reload"
   },
   "displayScaling": "engine-projected world guides; no manual resolution matching required",
   "knownMaps": [
@@ -86,6 +90,14 @@
       "baseVolumes": {
         "3086023598_000.vpk": "de57c9fdd53fb1ee5ea5a79b24f7bb1e4435e6c71950d589e1334d1f7a86d7a5",
         "3086023598_001.vpk": "40ad3091c3c2785737a7c7b1b3920c3b3d20bfe5ef4bca20a905a12c9f78b064"
+      }
+    },
+    {
+      "label": "2026-10-13 版 5EHub",
+      "date": "2026-10-13",
+      "baseVolumes": {
+        "3086023598_000.vpk": "df9d094217f55c8fc089e702bbb124b7cf34857a301f55557f31af3e8cd52050",
+        "3086023598_001.vpk": "2c41d6993fbf4371993324dbf88dda73bb12323a4fcebe46580323b4076ca250"
       }
     }
   ],
@@ -110,6 +122,111 @@
           "patchDataSha256": "38ca0e17f104e2e0b94eef5a671280bedfd45e43308e6891e5fd633c58ab68b6"
         }
       ]
+    },
+    {
+      "originalDirSha256": "929b4c05bbd258d0b6360512a280a2181f7f47f54915abfb798368e8add4771e",
+      "patches": [
+        {
+          "patchDirSha256": "85669265ba8c2845fac17f663db3319e59006b921d7378108ff433b49a7a9c28",
+          "patchDataSha256": "f4f3c7cedc56963b6ace5d2fc6ef24fddb4bb309384bba2a78573072459bd29c"
+        },
+        {
+          "patchDirSha256": "63d83ab994bcebe1262ddf91998e434cbd5b566d4a274790e55a45318767e89e",
+          "patchDataSha256": "a38a3fd27f9bc781d7976469cab619e504fff1f9e77190c1dbc30e84d505dad4"
+        },
+        {
+          "patchDirSha256": "6b78db0cbb877c76b22c80efd1f8b3698426ddd2fa4cb88e0c7b3d74a9579598",
+          "patchDataSha256": "184499a08ccff5548bf5badddbf64541eb08c18ae5e975a1d54ab60c5ff5c67c"
+        },
+        {
+          "patchDirSha256": "142c4a9d1eb9c26153ee22719e658380a2c18715ab778934fe78e58fdb9c8cc7",
+          "patchDataSha256": "c36c70ce464c7730484eb6d1fd543fe47a29fe4fde297dbe47a6ebece4137b45"
+        },
+        {
+          "patchDirSha256": "4f62ec3c37c51235a44fc1bd928bacb7d9f2c4db2dfd1946b1d790d13c53ae85",
+          "patchDataSha256": "5467ee72a2fd364506fd101ce43748f969b0f0bd9952ba3e9c63d0c74fe44ba7"
+        },
+        {
+          "patchDirSha256": "5edcbf3e45db5c9bed3a8e3875c9749619c96575799edb28b8fa59b8b7190bef",
+          "patchDataSha256": "72c8ec41e0240c79f4a88cbcb0d21dc2bf3dc50affda34e214599ecd121dfcc6"
+        }
+      ]
     }
-  ]
+  ],
+  "installerRevision": "2026.10.16-adaptive-1",
+  "preferences": {
+    "schema": 1,
+    "storage": "original map Instance.GetSaveData/SetSaveData slot",
+    "autoSave": "menu selection immediately; native buttons within 100ms real time",
+    "includes": [
+      "guide",
+      "autoAim",
+      "target",
+      "screenShake",
+      "drawingVersion",
+      "guideWhen",
+      "viewport",
+      "bulletTime",
+      "peek mode/speed/height/direction",
+      "original Settings.serialize values",
+      "botInvincible"
+    ]
+  },
+  "screenShakeSync": "Authoritative fresh menu state in warmup and training; actual cvar readback and drift repair; begin only after CFG and saved preferences are ready",
+  "dualVerification": {
+    "normalSpeed": {
+      "cases": [
+        "rapid taps",
+        "slow taps",
+        "pause and resume",
+        "full magazine"
+      ],
+      "shots": 63,
+      "hits": 63,
+      "maxDegrees": 0.3303380381928211
+    },
+    "bulletTime01": {
+      "shots": 6,
+      "hits": 6,
+      "maxDegrees": 0.047955376107261735
+    },
+    "limits": "Local computer only, spread disabled, fixed unobstructed target for impact tests. User confirmed quick/slow tapping guide display and idle reset. Other computers still require validation."
+  },
+  "botInvincible": "map-native zero-damage guard for the current peek Bot; restored from map save; no global Buddha command",
+  "botInvincibleVerification": {
+    "enabledHealthBefore": 100000,
+    "enabledHealthAfter": 100000,
+    "enabledHits": 6,
+    "disabledHealthAfter": 99300,
+    "restoredWeapon": "weapon_elite",
+    "botInvincible": true
+  },
+  "supportedMap": {
+    "mode": "locally-verified-compatible-map",
+    "verifiedNativeVersions": [
+      "2026-10-09",
+      "2026-10-13"
+    ]
+  },
+  "adaptive": {
+    "schema": 1,
+    "executable": "adapter/5EHubAdapter.exe",
+    "sha256": "4ef0cf9f6b528ffcb0217eacddf7f4c11d89c80caa1b7f056ff122d627452029",
+    "files": {
+      "adaptive/assets/materials/ulletical/colors/white.vmat_c": "af4fc9ce7b7ec78416d28a08d199550de53cbbde681a14b23ebe909204d1a510",
+      "adaptive/assets/materials/ulletical/colors/white_vmat_g_tcolor_7ab53e0a.vtex_c": "76d40f108d0154d327dddb165e89383a05cf27f2586b3241900cde77ff011f31",
+      "adaptive/assets/models/ulletical/recoil_master/patterns/dot_single_001.vmdl_c": "60dcd4374d1f0d2245647bc7b49ed84de19be725856e2ef0304961627306b2b0",
+      "adaptive/baselines/37a225da06e9d092771a7116f56751cbac10f89720bc4b5768c32a888140fe96.vpk": "37a225da06e9d092771a7116f56751cbac10f89720bc4b5768c32a888140fe96",
+      "adaptive/baselines/929b4c05bbd258d0b6360512a280a2181f7f47f54915abfb798368e8add4771e.vpk": "929b4c05bbd258d0b6360512a280a2181f7f47f54915abfb798368e8add4771e",
+      "adaptive/extension.js": "a53bbbd5b78918092ed75f4dbb08734b4ccc9c4f103d84bd4d4b701acf6dae06",
+      "adaptive/recipe.json": "75577f65626a189353cc12e2847cef743ff0f1781b063a3a81cab4244cfcc68d"
+    },
+    "mode": "exact-context hooks with full native VPK verification"
+  },
+  "referenceBuild": {
+    "allOriginalEntriesPreserved": 1298,
+    "verifiedEntries": 1301,
+    "extensionUnchanged": true,
+    "removedObsoleteTickCallback": true
+  }
 }

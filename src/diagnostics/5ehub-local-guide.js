@@ -12,7 +12,7 @@ function __5ehubSelectProfile(weapon){
     const name=scoped&&__5ehubWeaponProfiles[nativeName+"_scoped"]?nativeName+"_scoped":nativeName,profile=__5ehubWeaponProfiles[name];
     const selected=profile?.recoil?.length&&(!profile.silenced||weapon.IsSilencerOn())?profile:undefined;
     if(name!==__5ehubProfileName||selected!==__5ehubProfile){
-        if(__5ehubProfileName?.replace(/_scoped$/,"")!==nativeName||!selected)__5ehubRmResetShots();
+        if(__5ehubProfileName?.replace(/_scoped$/,"")!==nativeName||!selected){__5ehubRmResetShots();__5ehubNativePunch=undefined;}
         __5ehubProfileName=name;__5ehubProfile=selected;
     }
     return selected;
@@ -32,8 +32,21 @@ function __5ehubSetGuideWhen(value){
     if(!["always","fire","visible"].includes(value))return false;
     __5ehubGuideWhen=value;return true;
 }
-let __5ehubScreenShake=false;
-function __5ehubSetScreenShake(enabled){__5ehubScreenShake=!!enabled;Command("view_punch_decay "+(__5ehubScreenShake?18:10000));}
+let __5ehubScreenShake=false,__5ehubScreenShakeRevision=0;
+let __5ehubBotInvincible=false;
+function __5ehubSetBotInvincible(enabled){__5ehubBotInvincible=!!enabled;}
+function __5ehubBlockBotDamage(event){
+    return __5ehubBotInvincible&&ModeMgr.getCurrentModeId()==="peek"&&
+        event.player===peekMode.victim&&event.player?.GetOriginalPlayerController()?.IsBot()===true;
+}
+function __5ehubPublishShakeState(request=""){
+    Instance.Msg("[AK-SHAKE] "+JSON.stringify({request:String(request).trim().slice(0,64),screenShake:__5ehubScreenShake,revision:__5ehubScreenShakeRevision}));
+}
+function __5ehubSetScreenShake(enabled){
+    __5ehubScreenShake=!!enabled;__5ehubScreenShakeRevision++;
+    Command("view_punch_decay "+(__5ehubScreenShake?18:10000));
+    __5ehubPublishShakeState();
+}
 let __5ehubRmPart="head", __5ehubRmShotCount=0, __5ehubRmLastShotTime;
 let __5ehubFireRecord, __5ehubLastRender, __5ehubReloadUntil=0;
 let __5ehubDisplay="world",__5ehubViewport=__VIEWPORT__;
@@ -52,6 +65,23 @@ let __5ehubCueDisplay="world";
 let __5ehubAlignSamples=[];
 let __5ehubTestSettings;
 let __5ehubViewDelta={pitch:0,yaw:0,updated:0,velocityPitch:0,velocityYaw:0};
+let __5ehubNativePunch;
+function __5ehubIntegratePunch(angle,velocity,age){
+    age=Math.max(0,age);if(age>=2)return [0,0,0];const step=1/128,n=Math.floor(age/step);
+    let a=angle.slice();const frames=[a.slice()];
+    for(let i=1;i<=Math.min(n+1,128);i++){
+        a=a.map(x=>x*Math.exp(-.0625));const length=Math.hypot(...a);
+        a=length?a.map(x=>x*Math.max(0,1-.140625/length)):[0,0,0];
+        for(const t of [(i-1)*step,i*step]){
+            const v=velocity.map(x=>x*Math.exp(-4.5*t));
+            if(Math.hypot(...v)>=.03125)a=a.map((x,k)=>x+v[k]/256);
+        }
+        frames.push(a.slice());
+    }
+    const at=k=>k<frames.length?frames[k]:frames[frames.length-1].map(x=>x*Math.exp(-.0625*(k-frames.length+1)));
+    const f=age/step-n,b=at(n),c=at(n+1),out=b.map((x,k)=>(1-f)*x+f*c[k]);
+    return Math.hypot(...out)<.03125?[0,0,0]:out.map(x=>2*x);
+}
 let __5ehubCameraProbe=false,__5ehubCameraFollowProbe=false;
 function __5ehubCameraProbeTick(){
     if(!__5ehubCameraProbe)return;
@@ -104,8 +134,17 @@ function __5ehubCanSeeBot(human,bot,eye,view){
     }
     return false;
 }
-function __5ehubAim(eye,target,index){
-    const a=__5ehubRmAngles(__5ehubDelta(target,eye)),table=__5ehubProfile.recoil,r=table[Math.min(index,table.length-1)];
+function __5ehubUsesLiveRecoil(){return __5ehubProfileName==="weapon_elite";}
+function __5ehubLiveRecoil(){
+    if(!__5ehubUsesLiveRecoil())return undefined;
+    if(!__5ehubNativePunch)return {pitch:0,yaw:0};
+    // Native recoil snapshots are independent of cached camera/input angles.
+    // Recovery runs on simulation time, including bullet-time changes.
+    const r=__5ehubIntegratePunch(__5ehubNativePunch.angle,__5ehubNativePunch.velocity,Instance.GetGameTime()-__5ehubNativePunch.time);
+    return {pitch:r[0],yaw:r[1]};
+}
+function __5ehubAim(eye,target,index,live=false){
+    const a=__5ehubRmAngles(__5ehubDelta(target,eye)),table=__5ehubProfile.recoil,r=(live?__5ehubLiveRecoil():undefined)??table[Math.min(index,table.length-1)];
     return {pitch:a.pitch-r.pitch,yaw:__5ehubRmWrap(a.yaw-r.yaw),roll:0};
 }
 function __5ehubDisplayAim(eye,target,index){
@@ -116,10 +155,11 @@ function __5ehubDisplayAim(eye,target,index){
     return correction?{pitch:aim.pitch+correction.pitch,yaw:__5ehubRmWrap(aim.yaw+correction.yaw),roll:0}:aim;
 }
 function __5ehubCurrentDisplayAim(eye,target,index){
-    // Only the active cue needs the current native camera offset. Future red
-    // references keep their immutable per-point display calibration.
-    if(__5ehubGuideStarted&&Date.now()/1000-__5ehubViewDelta.updated<.2){
-        const aim=__5ehubAim(eye,target,index);
+    // Automatic weapons keep the green cue on their immutable calibrated
+    // reference point. Only Dual Berettas use live recoil/camera recovery.
+    if(!__5ehubUsesLiveRecoil())return __5ehubDisplayAim(eye,target,index);
+    if(Date.now()/1000-__5ehubViewDelta.updated<.2){
+        const aim=__5ehubAim(eye,target,index,true);
         // Extrapolate only the measured camera offset over transport delay.
         // Reference geometry and bullet compensation remain unchanged.
         const age=Math.max(0,Math.min(.12,Date.now()/1000-__5ehubViewDelta.updated));
@@ -151,7 +191,8 @@ function __5ehubRmCurrentIndex(now){
     // Keep the last measured reference visible until this target dies.
     return Math.min(__5ehubRmShotCount,__5ehubProfile.recoil.length-1);
 }
-function __5ehubContinuous(now){return __5ehubRmLastShotTime===undefined||now-__5ehubRmLastShotTime<.16;}
+function __5ehubSequenceTimeout(){return __5ehubUsesLiveRecoil() ? .35 : .16;}
+function __5ehubContinuous(now){return __5ehubRmLastShotTime===undefined||now-__5ehubRmLastShotTime<__5ehubSequenceTimeout();}
 function __5ehubRmSetMarkerStyle(i,state){
     const m=__5ehubRmMarkers[i];if(!m?.IsValid()||__5ehubRmMarkerStyles[i]===state)return;
     const s=__5ehubRmDotStyles[state];m.SetColor(s.color);
@@ -178,11 +219,11 @@ function __5ehubRmRender(){
     const now=Instance.GetGameTime();
     // A released trigger resets the visual sequence on the next Think.
     // Also handle a held trigger that has stopped producing shots (empty clip).
-    if(__5ehubGuideStarted&&(!human.IsInputPressed(CSInputs.ATTACK)||!__5ehubContinuous(now)))__5ehubRmResetShots();
+    if(__5ehubGuideStarted&&((!__5ehubUsesLiveRecoil()&&!human.IsInputPressed(CSInputs.ATTACK))||!__5ehubContinuous(now)))__5ehubRmResetShots();
     const eye=human.GetEyePosition(),target=__5ehubRmAnchor(bot),index=__5ehubRmCurrentIndex(now);
     if(index===undefined){__5ehubRmHide();return;}
-    const aim=__5ehubAim(eye,target,index);
-    const aimApplied=__5ehubAuto&&__5ehubGuideStarted&&__5ehubRmShotCount<profile.recoil.length&&now>=__5ehubReloadUntil&&__5ehubContinuous(now);
+    const aim=__5ehubAim(eye,target,index,true);
+    const aimApplied=__5ehubAuto&&__5ehubGuideStarted&&(__5ehubRmShotCount<profile.recoil.length||!!__5ehubLiveRecoil())&&now>=__5ehubReloadUntil&&__5ehubContinuous(now);
     if(aimApplied)human.SetEyeAngles(aim);
     const view=human.GetEyeAngles();
     const cameraView=Date.now()/1000-__5ehubViewDelta.updated<.2?{pitch:view.pitch+__5ehubViewDelta.pitch,yaw:__5ehubRmWrap(view.yaw+__5ehubViewDelta.yaw),roll:0}:view;
@@ -204,7 +245,7 @@ function __5ehubRmRender(){
     for(let i=0;i<profile.recoil.length;i++){
         // Consumed points are removed, rather than retained as grey history.
         if(i<index)continue;
-        const pointAim=__5ehubDisplay==="world"?(i===index?displayAim:__5ehubDisplayAim(eye,target,i)):__5ehubAim(eye,target,i);
+        const pointAim=__5ehubDisplay==="world"?(i===index?displayAim:__5ehubDisplayAim(eye,target,i)):(i===index?aim:__5ehubAim(eye,target,i));
         const ray=__5ehubRmDirection(pointAim),dot=ray.x*normal.x+ray.y*normal.y+ray.z*normal.z;
         if(!showGuide||dot<=.25)continue;
         const t=drawDepth/dot;
@@ -260,10 +301,21 @@ __5ehubRmConsoleCommand("akauto",args=>{__5ehubAuto=args.trim()==="on";Instance.
 __5ehubRmConsoleCommand("akguide",args=>{__5ehubRmGuideEnabled=args.trim()!=="off";if(!__5ehubRmGuideEnabled)__5ehubRmHide();});
 __5ehubRmConsoleCommand("akguidewhen",args=>__5ehubSetGuideWhen(args.trim()));
 __5ehubRmConsoleCommand("akshake",args=>__5ehubSetScreenShake(args.trim()==="on"));
+__5ehubRmConsoleCommand("akbotgod",args=>__5ehubSetBotInvincible(args.trim()==="on"));
+__5ehubRmConsoleCommand("akshakestate",args=>__5ehubPublishShakeState(args));
 __5ehubRmConsoleCommand("akanchor",args=>{const p=args.trim();if(["head","neck","chest"].includes(p))__5ehubRmPart=p;});
 __5ehubRmConsoleCommand("akdisplay",args=>__5ehubSetDrawingVersion(args.trim()==="screen"?1:2));
 __5ehubRmConsoleCommand("akversion",args=>__5ehubSetDrawingVersion(Number(args.trim())));
 __5ehubRmConsoleCommand("akcue",args=>{__5ehubCueDisplay=args.trim()==="hud"?"hud":"world";});
+__5ehubRmConsoleCommand("akpunch",args=>{
+    if(!__5ehubUsesLiveRecoil())return;
+    const values=args.trim().split(/\s+/).map(Number);
+    if(values.length!==7||values.some(x=>!Number.isFinite(x)))return;
+    const [time,...state]=values,now=Instance.GetGameTime();
+    if(time<0||time>now+.5||state.some(x=>Math.abs(x)>500))return;
+    if(__5ehubNativePunch&&time<__5ehubNativePunch.time)return;
+    __5ehubNativePunch={time,angle:state.slice(0,3),velocity:state.slice(3)};
+});
 __5ehubRmConsoleCommand("akviewdelta",args=>{
     const [pitch,yaw,velocityPitch=0,velocityYaw=0,captured]=args.trim().split(/\s+/).map(Number);
     const now=Date.now()/1000;
@@ -290,7 +342,7 @@ async function __5ehubEquipWeapon(name){
     return true;
 }
 __5ehubRmConsoleCommand("akweapon",args=>{
-    const value=args.trim(),aliases={ak:"weapon_ak47",ak47:"weapon_ak47",m4a1:"weapon_m4a1_silencer",m4a1s:"weapon_m4a1_silencer",m4a4:"weapon_m4a1",galil:"weapon_galilar",galilar:"weapon_galilar"};
+    const value=args.trim(),aliases={ak:"weapon_ak47",ak47:"weapon_ak47",m4a1:"weapon_m4a1_silencer",m4a1s:"weapon_m4a1_silencer",m4a4:"weapon_m4a1",galil:"weapon_galilar",galilar:"weapon_galilar",elite:"weapon_elite",dual:"weapon_elite"};
     __5ehubEquipWeapon(aliases[value]||value).catch(e=>Instance.Msg("[GUN-GUIDE] equip error="+String(e)));
 });
 __5ehubRmConsoleCommand("akenter",()=>{
@@ -321,11 +373,13 @@ __5ehubRmConsoleCommand("aktest",args=>{
             peekMode.peekMode=__5ehubTestSettings.peekMode;
             peekMode.iBotSpawnHeightLow=__5ehubTestSettings.heightLow;
             peekMode.iBotSpawnHeightHigh=__5ehubTestSettings.heightHigh;
-            PlayerMgr.setBotHP(Settings.get("botHP"));__5ehubTestSettings=undefined;
+            PlayerMgr.setBotHP(Settings.get("botHP"));
+            if(__5ehubTestSettings.preferences&&typeof __codexRestorePreferences==="function")__codexRestorePreferences(__5ehubTestSettings.preferences);
+            __5ehubTestSettings=undefined;
         }
         __5ehubRmResetShots();return;
     }
-    if(!__5ehubTestSettings)__5ehubTestSettings={noSpread:Settings.get("accuracyNospread"),infBullet:Settings.get("infBullet"),auto:__5ehubAuto,part:__5ehubRmPart,peekMode:peekMode.peekMode,heightLow:peekMode.iBotSpawnHeightLow,heightHigh:peekMode.iBotSpawnHeightHigh};
+    if(!__5ehubTestSettings)__5ehubTestSettings={preferences:typeof __codexCapturePreferences==="function"?__codexCapturePreferences():undefined,noSpread:Settings.get("accuracyNospread"),infBullet:Settings.get("infBullet"),auto:__5ehubAuto,part:__5ehubRmPart,peekMode:peekMode.peekMode,heightLow:peekMode.iBotSpawnHeightLow,heightHigh:peekMode.iBotSpawnHeightHigh};
     const [part,testMode]=args.trim().split(/\s+/);
     if(testMode==="static"||testMode==="moving"){
         // Use the map's native platform and spawn flow, above its low cover.
@@ -362,7 +416,7 @@ eventBus.on(GameEvents.GUN_FIRE,(controller,name)=>{
     const human=__5ehubRmFindHuman();if(ModeMgr.getCurrentModeId()!=="peek"||!peekMode.bPeekStatus||!__5ehubRmRoundActive||!human||controller?.IsBot()||controller?.GetPlayerSlot()!==human.GetOriginalPlayerController().GetPlayerSlot())return;
     if(name!==human.GetActiveWeapon()?.GetData()?.GetName()||!__5ehubSelectProfile(human.GetActiveWeapon()))return;
     const bot=__5ehubFindTarget(human);if(!bot)return;
-    const now=Instance.GetGameTime();if(__5ehubRmLastShotTime!==undefined&&now-__5ehubRmLastShotTime>.16)__5ehubRmResetShots();
+    const now=Instance.GetGameTime();if(__5ehubRmLastShotTime!==undefined&&!__5ehubContinuous(now))__5ehubRmResetShots();
     if(!__5ehubRmRoundActive)__5ehubRmRoundActive=true;
     __5ehubGuideStarted=true;__5ehubRoundFired=true;
     __5ehubFireRecord={weapon:name,profile:__5ehubProfileName,eye:human.GetEyePosition(),view:human.GetEyeAngles(),index:__5ehubRmShotCount,target:__5ehubRmAnchor(bot),bot,consumed:false};

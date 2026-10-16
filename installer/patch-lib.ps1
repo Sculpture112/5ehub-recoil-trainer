@@ -64,6 +64,11 @@ function Read-PatchManifest([string]$PackageRoot) {
     if ($manifest.schema -ne 1 -or $manifest.mapId -ne $script:MapId) {
         Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '补丁清单格式或地图编号不符。' @() '请使用 5EHub 对应的完整补丁包。'
     }
+    if($manifest.PSObject.Properties['adaptive']) {
+        if($manifest.adaptive.schema -ne 1 -or $manifest.adaptive.executable -notmatch '^adapter[\\/]5EHubAdapter\.exe$' -or $manifest.adaptive.sha256 -notmatch '^[0-9a-fA-F]{64}$'){
+            Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '自动适配程序信息无效。' @() '重新下载并完整解压补丁。'
+        }
+    }
     foreach ($key in @('originalDirSha256','patchDirSha256','patchDataSha256')) {
         if ($manifest.PSObject.Properties[$key].Value -notmatch '^[0-9a-fA-F]{64}$') {
             Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '补丁版本清单的文件校验信息无效。' @($key) '重新下载完整补丁，不要手动修改校验值。'
@@ -71,6 +76,14 @@ function Read-PatchManifest([string]$PackageRoot) {
     }
     if ($manifest.PSObject.Properties['helper'] -and (-not $manifest.helper -or -not $manifest.helper.PSObject.Properties['sha256'] -or $manifest.helper.sha256 -notmatch '^[0-9a-fA-F]{64}$')) {
         Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '补丁版本清单缺少有效的辅助程序校验信息。' @() '重新下载并完整解压补丁。'
+    }
+    $script:DataName='3086023598_002.vpk'
+    if($manifest.PSObject.Properties['patchDataFile']) {
+        $name=[string]$manifest.patchDataFile
+        if($name -notmatch '^3086023598_(\d{3})\.vpk$' -or [int]$Matches[1] -lt 2 -or $manifest.baseVolumes.PSObject.Properties[$name]) {
+            Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '补丁分卷名称无效或与原图分卷冲突。' @($name) '重新完整解压补丁。'
+        }
+        $script:DataName=$name
     }
     return $manifest
 }
@@ -80,7 +93,8 @@ function Find-KnownBaseline($Manifest, $Hashes) {
     foreach ($record in $Manifest.knownMaps) {
         if (-not $record.PSObject.Properties['baseVolumes']) { continue }
         $matches = $true
-        foreach ($name in @('3086023598_000.vpk','3086023598_001.vpk')) {
+        if(@($record.baseVolumes.PSObject.Properties).Count -ne $Hashes.Count){continue}
+        foreach ($name in $record.baseVolumes.PSObject.Properties.Name) {
             if (-not $record.baseVolumes.PSObject.Properties[$name] -or $Hashes[$name] -ne $record.baseVolumes.PSObject.Properties[$name].Value) { $matches = $false }
         }
         if ($matches) { return $record }
@@ -91,7 +105,9 @@ function Find-KnownBaseline($Manifest, $Hashes) {
 function Assert-MapBaseline([string]$Target, $Manifest) {
     $script:PatchPhase = '原地图下载与版本检查'
     $missing = @()
-    foreach ($name in @($script:DirName,'3086023598_000.vpk','3086023598_001.vpk')) {
+    $volumeNames=@($Manifest.baseVolumes.PSObject.Properties.Name)
+    foreach($name in $volumeNames){if($name -notmatch '^3086023598_\d{3}\.vpk$'){Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '原图分卷名称无效。' @($name) '重新下载完整补丁。'}}
+    foreach ($name in @($script:DirName)+$volumeNames) {
         $path = Join-Path $Target $name
         if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { $missing += '缺少文件：' + $path }
         elseif ((Get-Item -LiteralPath $path).Length -eq 0) { $missing += '空文件：' + $path }
@@ -100,7 +116,7 @@ function Assert-MapBaseline([string]$Target, $Manifest) {
         Throw-PatchIssue 'MAP_DOWNLOAD_INCOMPLETE' '原地图文件缺失或为空。' $missing '先等待 Steam 创意工坊下载全部完成；仍缺失时重新订阅 5EHub。'
     }
     $actual = @{}; $expected = @{}; $different = @()
-    foreach ($name in @('3086023598_000.vpk','3086023598_001.vpk')) {
+    foreach ($name in $volumeNames) {
         $item = $Manifest.baseVolumes.PSObject.Properties[$name]
         if (-not $item -or $item.Value -notmatch '^[0-9a-fA-F]{64}$') {
             Throw-PatchIssue 'PACKAGE_MANIFEST_INVALID' '补丁清单缺少有效的地图版本信息。' @($name) '重新下载完整补丁。'
@@ -190,18 +206,26 @@ function Get-SteamLibraries {
     }
     $unique = @()
     foreach ($root in $roots) {
-        $path = [IO.Path]::GetFullPath($root).TrimEnd([char]'\')
-        if ($unique -notcontains $path) { $unique += $path }
+        try {
+            $path = [IO.Path]::GetFullPath($root).TrimEnd([char]'\')
+            if(-not (Test-Path -LiteralPath $path -PathType Container -ErrorAction Stop)) {
+                Write-Host ('跳过不存在或未连接的 Steam 库：'+$path);continue
+            }
+            if ($unique -notcontains $path) { $unique += $path }
+        } catch { Write-Host ('跳过无法访问的 Steam 库：'+$root) }
     }
     return $unique
 }
 
 function Find-MapTargets([string[]]$Libraries) {
     foreach ($library in $Libraries) {
-        $path = Join-Path $library "steamapps\workshop\content\730\$script:MapId"
-        if (Test-Path -LiteralPath $path -PathType Container) {
-            (Get-Item -LiteralPath $path).FullName
-        }
+        try {
+            if(-not (Test-Path -LiteralPath $library -PathType Container -ErrorAction Stop)) {
+                Write-Host ('跳过不存在或未连接的 Steam 库：'+$library);continue
+            }
+            $path = Join-Path $library "steamapps\workshop\content\730\$script:MapId"
+            if (Test-Path -LiteralPath $path -PathType Container) { (Get-Item -LiteralPath $path).FullName }
+        } catch { Write-Host ('跳过无法访问的 Steam 库：'+$library) }
     }
 }
 
@@ -274,6 +298,13 @@ function Invoke-MapPatch([string]$PackageRoot, [string]$TargetPath, [string]$Act
     $script:PatchPhase = '补丁包完整性检查'
     Write-Host '[1/5] 检查补丁包完整性……'
     $manifest = Read-PatchManifest $PackageRoot
+    if($manifest.PSObject.Properties['adaptive']) {
+        $target=Resolve-MapTarget $TargetPath
+        if($Action -ne 'Check'){Assert-GameClosed}
+        $context=Resolve-AdaptivePackage $PackageRoot $target $Action
+        Invoke-MapPatch -PackageRoot $context.packageRoot -TargetPath $target -Action $Action
+        return
+    }
     Write-Host ('补丁版本：' + $manifest.version)
     if ($Action -eq 'Install' -and $manifest.PSObject.Properties['helper']) {
         Assert-Digest (Join-Path $PackageRoot 'helper\5EHubAssist.exe') $manifest.helper.sha256 'Package'
@@ -327,6 +358,13 @@ function Invoke-MapPatch([string]$PackageRoot, [string]$TargetPath, [string]$Act
     $allowedDirs = @($manifest.originalDirSha256, $manifest.patchDirSha256)
     $allowedData = @('', $manifest.patchDataSha256)
     if ($state -and -not $rebase) { $allowedDirs += $state.patchDirSha256; $allowedData += $state.patchDataSha256 }
+    if($manifest.PSObject.Properties['adaptiveAdopt']) {
+        if($dirHash -ne $manifest.adaptiveAdopt.patchDirSha256 -or $dataHash -ne $manifest.adaptiveAdopt.patchDataSha256){
+            Throw-PatchIssue 'MAP_CHANGED_DURING_ADAPT' '地图在旧补丁识别后发生变化。' @() '等待 Steam 下载完成后重试。'
+        }
+        $allowedDirs+=$manifest.adaptiveAdopt.patchDirSha256
+        $allowedData+=$manifest.adaptiveAdopt.patchDataSha256
+    }
     # Steam replaces the original volumes but leaves our added volume behind.
     # Accept only published, known residue alongside the verified new original dir.
     if ($dirHash -eq $manifest.originalDirSha256) {
@@ -401,6 +439,11 @@ function Invoke-MapPatch([string]$PackageRoot, [string]$TargetPath, [string]$Act
                 Assert-Digest $data $manifest.patchDataSha256
                 Assert-Digest $directory $manifest.patchDirSha256
                 $nextState = @{schema=1; version=$manifest.version; originalDirSha256=$manifest.originalDirSha256; patchDirSha256=$manifest.patchDirSha256; patchDataSha256=$manifest.patchDataSha256; installed=$true}
+                if($manifest.PSObject.Properties['adaptiveGenerated']) {
+                    $nextState.patchDataFile=$script:DataName
+                    $nextState.baseVolumes=$manifest.baseVolumes
+                    $nextState.adaptiveReceipt=$manifest.adaptiveGenerated
+                }
             }
             elseif ($Action -eq 'Restore') {
                 $changing = $true
@@ -409,6 +452,11 @@ function Invoke-MapPatch([string]$PackageRoot, [string]$TargetPath, [string]$Act
                 if ($dataHash) { Remove-Item -LiteralPath $data -Force }
                 $nextState = if ($state -and -not $rebase) { $state } else { @{schema=1; version=$manifest.version; originalDirSha256=$manifest.originalDirSha256; patchDirSha256=$manifest.patchDirSha256; patchDataSha256=$manifest.patchDataSha256} }
                 $nextState.installed = $false
+                if($manifest.PSObject.Properties['adaptiveGenerated']) {
+                    $nextState.patchDataFile=$script:DataName
+                    $nextState.baseVolumes=$manifest.baseVolumes
+                    $nextState.adaptiveReceipt=$manifest.adaptiveGenerated
+                }
             }
             else { throw '未知操作。' }
             Write-JsonFile (Join-Path $stage 'next-state.json') $nextState
@@ -438,3 +486,5 @@ function Invoke-MapPatch([string]$PackageRoot, [string]$TargetPath, [string]$Act
         finally { $lock.Dispose(); Remove-Item -LiteralPath $lockPath -Force -ErrorAction SilentlyContinue }
     }
 }
+
+if(Test-Path -LiteralPath (Join-Path $PSScriptRoot 'adaptive-lib.ps1')){. (Join-Path $PSScriptRoot 'adaptive-lib.ps1')}

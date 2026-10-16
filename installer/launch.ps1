@@ -12,6 +12,16 @@ try {
     Assert-Digest $helper $manifest.helper.sha256 'Package'
     Write-Host '[启动 2/3] 检查地图版本与已安装补丁……'
     $target = Resolve-MapTarget $TargetPath
+    if($manifest.PSObject.Properties['adaptive']) {
+        $context=Resolve-AdaptivePackage $PSScriptRoot $target 'Install'
+        $manifest=Read-PatchManifest $context.packageRoot
+        $needsInstall=(Get-FileDigest (Join-Path $target $script:DirName)) -ne $manifest.patchDirSha256 -or (Get-FileDigest (Join-Path $target $script:DataName)) -ne $manifest.patchDataSha256
+        if($needsInstall){
+            Write-Host '检测到原图更新或尚未安装补丁；正在安装本机生成的兼容版本……'
+            Invoke-MapPatch -PackageRoot $context.packageRoot -TargetPath $target -Action Install
+            $manifest=Read-PatchManifest $context.packageRoot
+        }
+    }
     Assert-MapBaseline $target $manifest
     $script:PatchPhase = '检查补丁是否已安装到当前地图'
     Assert-Digest (Join-Path $target $script:DirName) $manifest.patchDirSha256 'Installed'
@@ -32,21 +42,25 @@ try {
     if ([IO.Path]::GetFileName($GamePath) -ne 'cs2.exe') { Throw-PatchIssue 'GAME_PATH_INVALID' '指定程序不是 cs2.exe。' @($GamePath) '使用正确的 CS2 游戏程序路径。' }
     $running = @(Get-CimInstance Win32_Process -Filter "Name='cs2.exe'")
     if ($running.Count -gt 0) {
-        if ($running.Count -ne 1 -or $running[0].ExecutablePath -ne $GamePath -or $running[0].CommandLine -notmatch '(?i)(?:^|\s)-vconport\s+29000(?:\s|$)') {
-            Throw-PatchIssue 'GAME_LAUNCH_MISMATCH' '当前运行的 CS2 与训练启动位置或参数不匹配。' @('训练需要本机控制台参数：-vconport 29000') '退出 CS2 后，使用本补丁文件夹的启动训练.cmd；它会自动带上所需参数。'
+        if ($running.Count -ne 1 -or $running[0].ExecutablePath -ne $GamePath -or $running[0].CommandLine -notmatch '(?i)(?:^|\s)-vconport\s+29000(?:\s|$)' -or $running[0].CommandLine -notmatch '(?i)(?:^|\s)-insecure(?:\s|$)') {
+            Throw-PatchIssue 'GAME_LAUNCH_MISMATCH' '当前运行的 CS2 与本地训练位置或参数不匹配，辅助程序未启动。' @('训练必须同时带上：-insecure 和 -vconport 29000') '退出 CS2 后，使用本补丁文件夹的启动训练.cmd；它会自动带上所需参数。'
         }
-        Write-Host '游戏已运行，将连接辅助程序；请打开原版 5EHub。'
+        $trainingGameId = [int]$running[0].ProcessId
+        Write-Host '本地训练启动参数已确认；辅助程序会等待进入 5EHub。'
     }
     else {
         $script:PatchPhase = '启动 CS2'
-        Start-Process -FilePath $GamePath -WorkingDirectory ([IO.Path]::GetDirectoryName($GamePath)) -ArgumentList '-steam -worldwide -insecure -novid -console -vconport 29000 +map 5e_aimhub customgamemode=3086023598 nomapvalidation=true' -WindowStyle Hidden
+        $trainingGame = Start-Process -FilePath $GamePath -WorkingDirectory ([IO.Path]::GetDirectoryName($GamePath)) -ArgumentList '-steam -worldwide -insecure -novid -console -condebug -vconport 29000 +map_workshop 3086023598 5e_aimhub' -WindowStyle Hidden -PassThru
+        $trainingGameId = [int]$trainingGame.Id
     }
     $script:PatchPhase = '启动后台辅助程序'
-    Start-Process -FilePath $helper -ArgumentList '--wait-console 90' -WindowStyle Hidden
-    Write-Host '已发起训练启动。后台程序将等待游戏连接，最长 90 秒。' -ForegroundColor Green
+    Start-Process -FilePath $helper -ArgumentList "--wait-console 90 --game-pid $trainingGameId" -WindowStyle Hidden
+    Write-Host '已发起训练启动。后台程序等待游戏及训练地图，最长 90 秒。' -ForegroundColor Green
     Write-Host '此处只确认启动请求已发出；游戏内轨迹是否显示仍需进入闪身模式确认。'
+    Write-Host '地图初始化完毕后，热身区也能同步屏幕晃动按钮。'
     Write-Host '双 Tab → 自瞄与目标，可切换绘制版本和显示时机。'
-    Write-Host '辅助程序在后台运行，退出游戏后自动结束；无需安装额外环境。'
+    Write-Host '离开 5e_aimhub、返回主菜单、地图检查失败或退出游戏后，辅助程序自动结束。'
+    Write-Host '离开后不会自动重新连接；再次训练请运行启动训练.cmd。无需安装额外环境。'
     exit 0
 }
 catch {

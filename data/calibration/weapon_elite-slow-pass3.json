@@ -1,0 +1,834 @@
+{
+  "ready": {
+    "event": "ready",
+    "weapon": "weapon_elite",
+    "nativeWeapon": "weapon_elite",
+    "scoped": false,
+    "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+    "count": 30,
+    "silenced": false,
+    "eye": {
+      "x": 96,
+      "y": 0,
+      "z": 63.96875
+    },
+    "view": {
+      "pitch": 0,
+      "yaw": -180,
+      "roll": 0
+    }
+  },
+  "records": [
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 1,
+      "time": 209.453125,
+      "pitch": 0.08309917263920852,
+      "yaw": 0.015217624486581371,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1256,
+        "y": -0.3590880334377289,
+        "z": 62.03908157348633
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 2,
+      "time": 209.5731201171875,
+      "pitch": -0.7981186467914085,
+      "yaw": -0.27142655067007126,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1256.0001220703125,
+        "y": 6.404860496520996,
+        "z": 82.83448028564453
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 3,
+      "time": 209.69313049316406,
+      "pitch": -2.926671084887289,
+      "yaw": -0.8659932239982027,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.9686279296875,
+        "y": 20.314870834350586,
+        "z": 132.71755981445312
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 4,
+      "time": 209.81312561035156,
+      "pitch": -4.054491717256269,
+      "yaw": -0.8128035556405848,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 19.066951751708984,
+        "z": 159.27352905273438
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 5,
+      "time": 209.9375,
+      "pitch": -4.775232531756274,
+      "yaw": -0.8906332821989054,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 20.892982482910156,
+        "z": 176.28469848632812
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 6,
+      "time": 210.0625,
+      "pitch": -5.2084060093975495,
+      "yaw": -1.1411148686393062,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 26.770305633544922,
+        "z": 186.5338134765625
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 7,
+      "time": 210.1875,
+      "pitch": -5.654826418495077,
+      "yaw": -0.8305375025428248,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.9686279296875,
+        "y": 19.483015060424805,
+        "z": 197.08975219726562
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 8,
+      "time": 210.3125,
+      "pitch": -5.66309669436373,
+      "yaw": -0.9889427550249366,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 23.199617385864258,
+        "z": 197.29153442382812
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 9,
+      "time": 210.4324951171875,
+      "pitch": -6.395200729383532,
+      "yaw": -1.201396352571237,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 28.184900283813477,
+        "z": 214.66934204101562
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 10,
+      "time": 210.55250549316406,
+      "pitch": -7.173476759539881,
+      "yaw": 0.012944574931907482,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9998779296875,
+        "y": -0.31810301542282104,
+        "z": 241.20956420898438
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 11,
+      "time": 210.67250061035156,
+      "pitch": -7.5844749267989755,
+      "yaw": -0.7866275258841142,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 18.452829360961914,
+        "z": 242.96990966796875
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 12,
+      "time": 210.796875,
+      "pitch": -7.452629057352738,
+      "yaw": -0.15669122361225618,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9996337890625,
+        "y": 3.8505756855010986,
+        "z": 248.18316650390625
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 13,
+      "time": 210.921875,
+      "pitch": -7.404601967812823,
+      "yaw": 0.8607876677554032,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9998779296875,
+        "y": -21.154788970947266,
+        "z": 247.00286865234375
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 14,
+      "time": 211.046875,
+      "pitch": -7.85537013066471,
+      "yaw": 0.4361577135389325,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9998779296875,
+        "y": -10.718448638916016,
+        "z": 258.26397705078125
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 15,
+      "time": 211.1668701171875,
+      "pitch": -8.122878964661027,
+      "yaw": -0.033817128843566024,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1270.2301025390625,
+        "y": 0.8063767552375793,
+        "z": 258.9999694824219
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 16,
+      "time": 211.28688049316406,
+      "pitch": -7.798999148397911,
+      "yaw": -0.476973192880223,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9996337890625,
+        "y": 11.721519470214844,
+        "z": 256.8535461425781
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 17,
+      "time": 211.40687561035156,
+      "pitch": -7.819551944176851,
+      "yaw": 0.2644079051830204,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9998779296875,
+        "y": -6.4976677894592285,
+        "z": 257.363525390625
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 18,
+      "time": 211.53125,
+      "pitch": -8.121169723339449,
+      "yaw": -0.13074076586485717,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1270.5184326171875,
+        "y": 3.1182048320770264,
+        "z": 259
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 19,
+      "time": 211.65625,
+      "pitch": -7.931506408746941,
+      "yaw": -0.8845423186594417,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.9688720703125,
+        "y": 20.750076293945312,
+        "z": 251.26669311523438
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 20,
+      "time": 211.78125,
+      "pitch": -7.375634355220768,
+      "yaw": -0.40169961553579014,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.999755859375,
+        "y": 9.871621131896973,
+        "z": 246.26284790039062
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 21,
+      "time": 211.90625,
+      "pitch": -7.005233162593527,
+      "yaw": -0.43863083467067554,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.999755859375,
+        "y": 10.779226303100586,
+        "z": 237.01620483398438
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 22,
+      "time": 212.0262451171875,
+      "pitch": -6.94410920506607,
+      "yaw": -0.7982006287834338,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.9686279296875,
+        "y": 18.724346160888672,
+        "z": 227.70382690429688
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 23,
+      "time": 212.14625549316406,
+      "pitch": -7.308468085918776,
+      "yaw": -0.592358819692322,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.999755859375,
+        "y": 14.557281494140625,
+        "z": 244.59005737304688
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 24,
+      "time": 212.26625061035156,
+      "pitch": -7.150383757122427,
+      "yaw": -1.1434548774556106,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1247.96875,
+        "y": 26.82521629333496,
+        "z": 232.63400268554688
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 25,
+      "time": 212.390625,
+      "pitch": -7.397318274941881,
+      "yaw": -0.5809011231895056,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9998779296875,
+        "y": 14.275689125061035,
+        "z": 246.80960083007812
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 26,
+      "time": 212.515625,
+      "pitch": -7.029482957424079,
+      "yaw": 0.08428955259614668,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.999755859375,
+        "y": -2.071352481842041,
+        "z": 237.61627197265625
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 27,
+      "time": 212.640625,
+      "pitch": -6.912129769241119,
+      "yaw": -0.31741974793953887,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9996337890625,
+        "y": 7.8004255294799805,
+        "z": 234.69171142578125
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 28,
+      "time": 212.7606201171875,
+      "pitch": -6.847440585411505,
+      "yaw": 0.17053499063672461,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.999755859375,
+        "y": -4.190778732299805,
+        "z": 233.0770263671875
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 29,
+      "time": 212.88063049316406,
+      "pitch": -6.595154375254197,
+      "yaw": 0.11599612059410447,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.9996337890625,
+        "y": -2.8505191802978516,
+        "z": 226.79074096679688
+      }
+    },
+    {
+      "event": "sample",
+      "weapon": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "scoped": false,
+      "run": "dual-1146e4ea0e7e4b8db3aebf6372452b0e",
+      "shot": 30,
+      "time": 213.00062561035156,
+      "pitch": -6.970694111406033,
+      "yaw": 0.42129651623406517,
+      "silenced": false,
+      "eye": {
+        "x": 96,
+        "y": 0,
+        "z": 63.999961853027344
+      },
+      "view": {
+        "pitch": 0,
+        "yaw": -180,
+        "roll": 0
+      },
+      "impact": {
+        "x": -1311.999755859375,
+        "y": -10.353224754333496,
+        "z": 236.15426635742188
+      }
+    }
+  ],
+  "presses": 30
+}

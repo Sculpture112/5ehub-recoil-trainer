@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "scriptKey": "scripts/vscripts/build/7ychu5/5e_aimhub/5e_aimhub.vjs_c",
+  "plans": [
+    {
+      "label": "2026-10-09",
+      "patches": [
+        {
+          "old": "        }\n        // 进入新模式\n        this.currentMode = newMode;\n        this.currentMode.onEnter();\n        // 触发事件\n        eventBus.emit(GameEvents.MODE_CHANGED, modeId, this.previousModeId);\n        return true;\n    }\n",
+          "new": "        }\n        // 进入新模式\n        this.currentMode = newMode;\n        this.currentMode.onEnter();\n        if (SCRIPT_MAP_NOW === \"5e_aimhub\") {\n            Instance.Delay(0.5).then(() => __codexApplyPersistentTrainingSettings(\"mode-switch\"))\n                .catch(error => printl(\"[CODEX-SESSION] mode-switch refresh failed=\" + String(error)));\n        }\n        // 触发事件\n        eventBus.emit(GameEvents.MODE_CHANGED, modeId, this.previousModeId);\n        return true;\n    }\n"
+        },
+        {
+          "old": "            const p = this.players[j];\n            if (p)\n                p.applyGlow();\n        }\n    }\n    // ==================== 基础访问 ====================\n    /** 获取玩家（可能 undefined） */\n    get(slot) {\n",
+          "new": "            const p = this.players[j];\n            if (p)\n                p.applyGlow();\n        }\n        __codexQueueHiddenUiRecovery(this);\n    }\n    // ==================== 基础访问 ====================\n    /** 获取玩家（可能 undefined） */\n    get(slot) {\n"
+        },
+        {
+          "old": "    checkActivation() {\n        const pawn = this.player.getPawn();\n        if (!pawn?.IsValid())\n            return;\n        const now = Instance.GetGameTime();\n        // 超时：1 秒内未再次按下 Tab，重置计数\n        if (this._scoreCount >= 1 && now - this._lastTabTime > 1.0) {\n            this._scoreCount = 0;\n        }\n        // 双通道检测 Tab 按下：\n",
+          "new": "    checkActivation() {\n        const pawn = this.player.getPawn();\n        if (!pawn?.IsValid())\n            return;\n        const now = Date.now() / 1000;\n        // 双击 Tab 始终按真实时间判断，与子弹时间速度无关\n        if (this._scoreCount >= 1 && now - this._lastTabTime > 1.0) {\n            this._scoreCount = 0;\n        }\n        // 双通道检测 Tab 按下：\n"
+        },
+        {
+          "old": "        return this._onSelect?.(row, col, label);\n    }\n    /** 关闭菜单（隐藏布局 + 释放光标 + 解冻） */\n    hide() {\n        if (!this._active)\n            return;\n        this._active = false;\n        Command(\"host_timescale 1\"); // 关闭菜单恢复游戏时间\n        setInputCapture(this.player.id, false);\n        setPanelClassForPlayer(this.player.id, PANEL.dialog, \"Dismissed\", true);\n        EmitSound(\"UIPanorama.round_report_round_lost\", this.player.getPawn()?.GetAbsOrigin());\n        if (this.freezeOnOpen)\n            this.player.setFrozen(false);\n",
+          "new": "        return this._onSelect?.(row, col, label);\n    }\n    /** 关闭菜单（隐藏布局 + 释放光标 + 解冻） */\n    hide() {\n        const wasActive = this._active;\n        this._active = false;\n        if (!isFailActive())\n            setInputCapture(this.player.id, false);\n        if (!wasActive)\n            return;\n        __codexApplyBulletTime(); // Restore the selected training speed after closing the menu.\n        setPanelClassForPlayer(this.player.id, PANEL.dialog, \"Dismissed\", true);\n        EmitSound(\"UIPanorama.round_report_round_lost\", this.player.getPawn()?.GetAbsOrigin());\n        if (this.freezeOnOpen)\n            this.player.setFrozen(false);\n"
+        },
+        {
+          "old": "            printl(\"_peek_choose_position failed\");\n            return;\n        }\n        const templatePlatfrom = Instance.FindEntityByName(\"peek_template_platfrom\");\n        templatePlatfrom.ForceSpawn({\n            x: templatePlatfrom.GetAbsOrigin().x,\n            y: templatePlatfrom.GetAbsOrigin().y,\n            z: randomPosition.z,\n        });\n        for (const element of victims) {\n            if (element.GetOriginalPlayerController().IsBot()) {\n                this.victim = element;\n                element.Teleport({ position: randomPosition });\n",
+          "new": "            printl(\"_peek_choose_position failed\");\n            return;\n        }\n        const templatePlatfrom = Instance.FindEntityByName(\"peek_template_platfrom\");\n        // point_template.GetAbsOrigin() faults in the current native binding;\n        // these are the original Hammer coordinates of that exact template.\n        templatePlatfrom.ForceSpawn({ x: -1024, y: -512, z: randomPosition.z });\n        for (const element of victims) {\n            if (element.GetOriginalPlayerController().IsBot()) {\n                this.victim = element;\n                element.Teleport({ position: randomPosition });\n"
+        },
+        {
+          "old": "    \"mp_taser_recharge_time 0\",\n    \"mp_startmoney 99999\",\n    \"mp_maxmoney 0\",\n    \"mp_freezetime 0\",\n    \"mp_roundtime 60\",\n    \"mp_free_armor 0\",\n    \"mp_respawn_on_death_ct 1\",\n    \"mp_respawn_on_death_t 1\",\n    \"mp_ignore_round_win_conditions 1\",\n    \"mp_death_drop_grenade 0\",\n    \"mp_death_drop_gun 0\",\n    \"mp_drop_grenade_enable 0\",\n    \"mp_drop_knife_enable 0\",\n    \"mp_maxrounds 999\",\n    \"mp_warmup_end\",\n    \"mp_weapons_allow_map_placed 0\",\n    \"mp_team_intro_time 0\",\n    \"mp_teammates_are_enemies 0\",\n",
+          "new": "    \"mp_taser_recharge_time 0\",\n    \"mp_startmoney 99999\",\n    \"mp_maxmoney 0\",\n    \"mp_freezetime 0\",\n    \"mp_roundtime 9999\",\n    \"mp_free_armor 0\",\n    \"mp_respawn_on_death_ct 1\",\n    \"mp_respawn_on_death_t 1\",\n    \"mp_ignore_round_win_conditions 1\",\n    \"mp_timelimit 0\",\n    \"sv_maxspeed 320\",\n    \"mp_death_drop_grenade 0\",\n    \"mp_death_drop_gun 0\",\n    \"mp_drop_grenade_enable 0\",\n    \"mp_drop_knife_enable 0\",\n    \"mp_maxrounds 0\",\n    \"mp_warmup_end\",\n    \"mp_weapons_allow_map_placed 0\",\n    \"mp_team_intro_time 0\",\n    \"mp_teammates_are_enemies 0\",\n"
+        },
+        {
+          "old": "    \"mp_disconnect_kills_players 0\",\n    \"mp_suicide_penalty 0\",\n    \"mp_weapons_allow_heavyassaultsuit 1\",\n    \"mp_heavybot_damage_reduction_scale 1\",\n    \"mp_roundtime_defuse 60\",\n    \"mp_allowspectators 0\",\n    \"sv_showimpacts_time 1\",\n    \"sv_disable_radar 1\",\n    \"weapon_max_before_cleanup 1\",\n",
+          "new": "    \"mp_disconnect_kills_players 0\",\n    \"mp_suicide_penalty 0\",\n    \"mp_weapons_allow_heavyassaultsuit 1\",\n    \"mp_heavybot_damage_reduction_scale 1\",\n    \"mp_roundtime_defuse 9999\",\n    \"mp_allowspectators 0\",\n    \"sv_showimpacts_time 1\",\n    \"sv_disable_radar 1\",\n    \"weapon_max_before_cleanup 1\",\n"
+        },
+        {
+          "old": "        printl(`[Think] ${name} tick 异常: ${e}`);\n    }\n}\nInstance.SetThink(() => {\n    safeTick(\"scheduleTick\", () => tickCallback());\n    safeTick(\"Input\", () => Input.tick());\n    safeTick(\"AutoAim\", () => AutoAim.tick());\n    safeTick(\"EyeTrace\", () => EyeTrace.tick());\n    safeTick(\"ProjectileTrace\", () => ProjectileTrace.tick());\n    safeTick(\"PlayerTrace\", () => PlayerTrace.tick());\n    safeTick(\"GrenadeCam\", () => GrenadeCam.tick());\n",
+          "new": "        printl(`[Think] ${name} tick 异常: ${e}`);\n    }\n}\nInstance.SetThink(() => {\n    safeTick(\"CodexUnlimitedSession\", () => __codexKeepTrainingSessionOpen());\n    safeTick(\"CodexHiddenUiRecovery\", () => __codexRecoverHiddenUiCapture());\n    safeTick(\"scheduleTick\", () => tickCallback());\n    safeTick(\"Input\", () => Input.tick());\n    safeTick(\"AutoAim\", () => AutoAim.tick());\n    safeTick(\"CodexAKGuide\", () => __5ehubRmRender());\n    safeTick(\"CodexPreferences\", () => __codexPreferencesTick());\n    Instance.QueueAfterThinks(() => safeTick(\"CodexCameraProbe\", () => __5ehubCameraProbeTick()));\n    safeTick(\"EyeTrace\", () => EyeTrace.tick());\n    safeTick(\"ProjectileTrace\", () => ProjectileTrace.tick());\n    safeTick(\"PlayerTrace\", () => PlayerTrace.tick());\n    safeTick(\"GrenadeCam\", () => GrenadeCam.tick());\n"
+        },
+        {
+          "old": "    if (!_cfgEndrounded) {\n        return;\n    }\n    PlayerMgr.initialize();\n    // initialize() 会重建所有 Player 对象，在此之后补充 UI 初始化\n    PlayerMgr.forEachHuman(p => { if (!p.ui) {\n        p.ui = new PlayerUI(p);\n        p.ui.init();\n",
+          "new": "    if (!_cfgEndrounded) {\n        return;\n    }\n    PlayerMgr.initialize();\n    __codexApplyPersistentTrainingSettings(\"post-config-round-start\");\n    // initialize() 会重建所有 Player 对象，在此之后补充 UI 初始化\n    PlayerMgr.forEachHuman(p => { if (!p.ui) {\n        p.ui = new PlayerUI(p);\n        p.ui.init();\n"
+        },
+        {
+          "old": "        officialPracMode.dispatchWeaponFire(event);\n    }\n});\nInstance.OnModifyPlayerDamage((event) => {\n    if (ModeMgr.getCurrentModeId() === \"recoil\") {\n        return recoilModifyPlayerDamage(event);\n    }\n    GrenadeDamageReport.onModifyPlayerDamage(event);\n",
+          "new": "        officialPracMode.dispatchWeaponFire(event);\n    }\n});\nInstance.OnModifyPlayerDamage((event) => {\n    if (__5ehubBlockBotDamage(event)) return { damage: 0 };\n    if (ModeMgr.getCurrentModeId() === \"recoil\") {\n        return recoilModifyPlayerDamage(event);\n    }\n    GrenadeDamageReport.onModifyPlayerDamage(event);\n"
+        }
+      ]
+    },
+    {
+      "label": "2026-10-13",
+      "patches": [
+        {
+          "old": "        }\n        // 进入新模式\n        this.currentMode = newMode;\n        this.currentMode.onEnter();\n        // 触发事件\n        eventBus.emit(GameEvents.MODE_CHANGED, modeId, this.previousModeId);\n        return true;\n    }\n",
+          "new": "        }\n        // 进入新模式\n        this.currentMode = newMode;\n        this.currentMode.onEnter();\n        if (SCRIPT_MAP_NOW === \"5e_aimhub\") {\n            Instance.Delay(0.5).then(() => __codexApplyPersistentTrainingSettings(\"mode-switch\"))\n                .catch(error => printl(\"[CODEX-SESSION] mode-switch refresh failed=\" + String(error)));\n        }\n        // 触发事件\n        eventBus.emit(GameEvents.MODE_CHANGED, modeId, this.previousModeId);\n        return true;\n    }\n"
+        },
+        {
+          "old": "            const p = this.players[j];\n            if (p)\n                p.applyGlow();\n        }\n    }\n    // ==================== 基础访问 ====================\n    /** 获取玩家（可能 undefined） */\n    get(slot) {\n",
+          "new": "            const p = this.players[j];\n            if (p)\n                p.applyGlow();\n        }\n        __codexQueueHiddenUiRecovery(this);\n    }\n    // ==================== 基础访问 ====================\n    /** 获取玩家（可能 undefined） */\n    get(slot) {\n"
+        },
+        {
+          "old": "    checkActivation() {\n        const pawn = this.player.getPawn();\n        if (!pawn?.IsValid())\n            return;\n        const now = Instance.GetGameTime();\n        // 超时：1 秒内未再次按下 Tab，重置计数\n        if (this._scoreCount >= 1 && now - this._lastTabTime > 1.0) {\n            this._scoreCount = 0;\n        }\n        // 双通道检测 Tab 按下：\n",
+          "new": "    checkActivation() {\n        const pawn = this.player.getPawn();\n        if (!pawn?.IsValid())\n            return;\n        const now = Date.now() / 1000;\n        // 双击 Tab 始终按真实时间判断，与子弹时间速度无关\n        if (this._scoreCount >= 1 && now - this._lastTabTime > 1.0) {\n            this._scoreCount = 0;\n        }\n        // 双通道检测 Tab 按下：\n"
+        },
+        {
+          "old": "        return this._onSelect?.(row, col, label);\n    }\n    /** 关闭菜单（隐藏布局 + 释放光标 + 解冻） */\n    hide() {\n        if (!this._active)\n            return;\n        this._active = false;\n        Command(\"host_timescale 1\"); // 关闭菜单恢复游戏时间\n        setInputCapture(this.player.id, false);\n        setPanelClassForPlayer(this.player.id, PANEL.dialog, \"Dismissed\", true);\n        EmitSound(\"UIPanorama.round_report_round_lost\", this.player.getPawn()?.GetAbsOrigin());\n        if (this.freezeOnOpen)\n            this.player.setFrozen(false);\n",
+          "new": "        return this._onSelect?.(row, col, label);\n    }\n    /** 关闭菜单（隐藏布局 + 释放光标 + 解冻） */\n    hide() {\n        const wasActive = this._active;\n        this._active = false;\n        if (!isFailActive())\n            setInputCapture(this.player.id, false);\n        if (!wasActive)\n            return;\n        __codexApplyBulletTime(); // Restore the selected training speed after closing the menu.\n        setPanelClassForPlayer(this.player.id, PANEL.dialog, \"Dismissed\", true);\n        EmitSound(\"UIPanorama.round_report_round_lost\", this.player.getPawn()?.GetAbsOrigin());\n        if (this.freezeOnOpen)\n            this.player.setFrozen(false);\n"
+        },
+        {
+          "old": "            printl(\"_peek_choose_position failed\");\n            return;\n        }\n        const templatePlatfrom = Instance.FindEntityByName(\"peek_template_platfrom\");\n        templatePlatfrom.ForceSpawn({\n            x: templatePlatfrom.GetAbsOrigin().x,\n            y: templatePlatfrom.GetAbsOrigin().y,\n            z: randomPosition.z,\n        });\n        for (const element of victims) {\n            if (element.GetOriginalPlayerController().IsBot()) {\n                this.victim = element;\n                element.Teleport({ position: randomPosition });\n",
+          "new": "            printl(\"_peek_choose_position failed\");\n            return;\n        }\n        const templatePlatfrom = Instance.FindEntityByName(\"peek_template_platfrom\");\n        // point_template.GetAbsOrigin() faults in the current native binding;\n        // these are the original Hammer coordinates of that exact template.\n        templatePlatfrom.ForceSpawn({ x: -1024, y: -512, z: randomPosition.z });\n        for (const element of victims) {\n            if (element.GetOriginalPlayerController().IsBot()) {\n                this.victim = element;\n                element.Teleport({ position: randomPosition });\n"
+        },
+        {
+          "old": "    \"mp_taser_recharge_time 0\",\n    \"mp_startmoney 99999\",\n    \"mp_maxmoney 0\",\n    \"mp_freezetime 0\",\n    \"mp_roundtime 60\",\n    \"mp_free_armor 0\",\n    \"mp_respawn_on_death_ct 1\",\n    \"mp_respawn_on_death_t 1\",\n    \"mp_ignore_round_win_conditions 1\",\n    \"mp_death_drop_grenade 0\",\n    \"mp_death_drop_gun 0\",\n    \"mp_drop_grenade_enable 0\",\n    \"mp_drop_knife_enable 0\",\n    \"mp_maxrounds 999\",\n    \"mp_warmup_end\",\n    \"mp_weapons_allow_map_placed 0\",\n    \"mp_team_intro_time 0\",\n    \"mp_teammates_are_enemies 0\",\n",
+          "new": "    \"mp_taser_recharge_time 0\",\n    \"mp_startmoney 99999\",\n    \"mp_maxmoney 0\",\n    \"mp_freezetime 0\",\n    \"mp_roundtime 9999\",\n    \"mp_free_armor 0\",\n    \"mp_respawn_on_death_ct 1\",\n    \"mp_respawn_on_death_t 1\",\n    \"mp_ignore_round_win_conditions 1\",\n    \"mp_timelimit 0\",\n    \"sv_maxspeed 320\",\n    \"mp_death_drop_grenade 0\",\n    \"mp_death_drop_gun 0\",\n    \"mp_drop_grenade_enable 0\",\n    \"mp_drop_knife_enable 0\",\n    \"mp_maxrounds 0\",\n    \"mp_warmup_end\",\n    \"mp_weapons_allow_map_placed 0\",\n    \"mp_team_intro_time 0\",\n    \"mp_teammates_are_enemies 0\",\n"
+        },
+        {
+          "old": "    \"mp_disconnect_kills_players 0\",\n    \"mp_suicide_penalty 0\",\n    \"mp_weapons_allow_heavyassaultsuit 1\",\n    \"mp_heavybot_damage_reduction_scale 1\",\n    \"mp_roundtime_defuse 60\",\n    \"mp_allowspectators 0\",\n    \"sv_showimpacts_time 1\",\n    \"sv_disable_radar 1\",\n    \"weapon_max_before_cleanup 1\",\n",
+          "new": "    \"mp_disconnect_kills_players 0\",\n    \"mp_suicide_penalty 0\",\n    \"mp_weapons_allow_heavyassaultsuit 1\",\n    \"mp_heavybot_damage_reduction_scale 1\",\n    \"mp_roundtime_defuse 9999\",\n    \"mp_allowspectators 0\",\n    \"sv_showimpacts_time 1\",\n    \"sv_disable_radar 1\",\n    \"weapon_max_before_cleanup 1\",\n"
+        },
+        {
+          "old": "        }\n    }\n}\nInstance.SetThink(() => {\n    safeTick(\"Input\", () => Input.tick());\n    safeTick(\"AutoAim\", () => AutoAim.tick());\n    safeTick(\"EyeTrace\", () => EyeTrace.tick());\n    safeTick(\"ProjectileTrace\", () => ProjectileTrace.tick());\n    safeTick(\"PlayerTrace\", () => PlayerTrace.tick());\n    safeTick(\"GrenadeCam\", () => GrenadeCam.tick());\n",
+          "new": "        }\n    }\n}\nInstance.SetThink(() => {\n    safeTick(\"CodexUnlimitedSession\", () => __codexKeepTrainingSessionOpen());\n    safeTick(\"CodexHiddenUiRecovery\", () => __codexRecoverHiddenUiCapture());\n    safeTick(\"Input\", () => Input.tick());\n    safeTick(\"AutoAim\", () => AutoAim.tick());\n    safeTick(\"CodexAKGuide\", () => __5ehubRmRender());\n    safeTick(\"CodexPreferences\", () => __codexPreferencesTick());\n    Instance.QueueAfterThinks(() => safeTick(\"CodexCameraProbe\", () => __5ehubCameraProbeTick()));\n    safeTick(\"EyeTrace\", () => EyeTrace.tick());\n    safeTick(\"ProjectileTrace\", () => ProjectileTrace.tick());\n    safeTick(\"PlayerTrace\", () => PlayerTrace.tick());\n    safeTick(\"GrenadeCam\", () => GrenadeCam.tick());\n"
+        },
+        {
+          "old": "    if (!_cfgEndrounded) {\n        return;\n    }\n    PlayerMgr.initialize();\n    // initialize() 会重建所有 Player 对象，在此之后补充 UI 初始化\n    PlayerMgr.forEachHuman(p => { if (!p.ui) {\n        p.ui = new PlayerUI(p);\n        p.ui.init();\n",
+          "new": "    if (!_cfgEndrounded) {\n        return;\n    }\n    PlayerMgr.initialize();\n    __codexApplyPersistentTrainingSettings(\"post-config-round-start\");\n    // initialize() 会重建所有 Player 对象，在此之后补充 UI 初始化\n    PlayerMgr.forEachHuman(p => { if (!p.ui) {\n        p.ui = new PlayerUI(p);\n        p.ui.init();\n"
+        },
+        {
+          "old": "        officialPracMode.dispatchWeaponFire(event);\n    }\n});\nInstance.OnModifyPlayerDamage((event) => {\n    if (ModeMgr.getCurrentModeId() === \"recoil\") {\n        return recoilModifyPlayerDamage(event);\n    }\n    GrenadeDamageReport.onModifyPlayerDamage(event);\n",
+          "new": "        officialPracMode.dispatchWeaponFire(event);\n    }\n});\nInstance.OnModifyPlayerDamage((event) => {\n    if (__5ehubBlockBotDamage(event)) return { damage: 0 };\n    if (ModeMgr.getCurrentModeId() === \"recoil\") {\n        return recoilModifyPlayerDamage(event);\n    }\n    GrenadeDamageReport.onModifyPlayerDamage(event);\n"
+        }
+      ]
+    }
+  ],
+  "required": [
+    "class ModeManager",
+    "class PlayerManager",
+    "class PlayerUI",
+    "class PeekMode",
+    "const PlayerMgr",
+    "const ModeMgr",
+    "const Settings",
+    "const Input",
+    "const peekMode",
+    "function safeTick",
+    "function loadData",
+    "function isCFGReady",
+    "Instance.SetThink",
+    "Instance.OnModifyPlayerDamage",
+    "Instance.OnGunFire"
+  ],
+  "assetKeys": [
+    "models/ulletical/recoil_master/patterns/dot_single_001.vmdl_c",
+    "materials/ulletical/colors/white.vmat_c",
+    "materials/ulletical/colors/white_vmat_g_tcolor_7ab53e0a.vtex_c"
+  ],
+  "protectedResources": {
+    "maps/5e_aimhub.vpk": [
+      "83090288ebdc370b256050da377726909d4c5cb03d9ff6b7bba356d4a0ec6553"
+    ]
+  }
+}

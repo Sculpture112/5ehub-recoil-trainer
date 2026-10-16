@@ -1,73 +1,59 @@
 # 5EHub Recoil Trainer
 
-为 CS2 的 **5EHub 闪身训练**加入跟随移动 Bot 的压枪轨迹提示。通过红色轨迹和绿色当前提示点练习跟枪、压枪，并在双 Tab 菜单中调整训练选项。
+为 CS2 原版 **5EHub 闪身训练**加入跟随移动 Bot 的压枪轨迹。红色点显示轨迹，绿色点提示当前瞄准位置；双击 Tab 调整选项。
 
-这是安装到原版 5EHub 的本机训练补丁，需要先订阅原地图。
+当前版本：**2026.10.16-integrated-12-adaptive**。
 
 ## 视频教程
 
-**下面是安装、练枪方法及相关原理介绍的视频教程：**
+[▶ 安装、练枪方法和原理介绍：CS2最强练枪图的安装，和练枪的一些介绍和解释，学会之后解锁donk同款激光枪](https://www.bilibili.com/video/BV1PBp46rEYw/)
 
-[▶ CS2最强练枪图的安装，和练枪的一些介绍和解释，学会之后解锁donk同款激光枪](https://www.bilibili.com/video/BV1PBp46rEYw/)
+视频部分界面可能早于当前版本，安装与更新步骤以下文为准。
 
 ## 下载与安装
 
-1. 在 Steam 订阅并下载 [原版 5EHub](https://steamcommunity.com/sharedfiles/filedetails/?id=3086023598)。
-2. 从 [Releases 下载补丁 ZIP](https://github.com/Sculpture112/5ehub-recoil-trainer/releases/latest)。请下载 `5EHub-Recoil-Patch.zip`，GitHub 自动生成的 Source code ZIP 是源码。
-3. 退出 CS2，将补丁完整解压到普通文件夹。
-4. 双击 **一键安装.cmd**；装过旧补丁也请保留原图备份目录。
-5. 双击 **启动训练.cmd**。进入闪身模式，踩原地图按钮开始一轮；双击 Tab 打开设置菜单。
+1. 在 Steam 订阅并完成下载 [原版 5EHub](https://steamcommunity.com/sharedfiles/filedetails/?id=3086023598)。
+2. 在 [最新发布页](https://github.com/Sculpture112/5ehub-recoil-trainer/releases/latest) 下载 **5EHub-Recoil-Patch.zip**。自动生成的 Source code ZIP 是源码，不是安装包。
+3. 退出 CS2，完整解压补丁，运行 **一键安装.cmd**。
+4. 运行 **启动训练.cmd**，进入闪身模式，踩地图按钮开始一轮；双击 Tab 打开训练设置。
 
-使用发布包无需安装 Python、Node 或 Workshop Tools，也不需要订阅 RecoilMaster。需要还原时，退出游戏后运行 **一键还原.cmd**。
+发布包自带运行环境，无需另装 Python、Node、Git、Workshop Tools 或 RecoilMaster。启动器使用国际服参数 `-worldwide`，并为训练启动 `-insecure` 和本机控制台连接。
 
-## 功能
+装过旧版可以直接运行本版安装器，但请保留地图目录中的 `.aim-recoil-patch-backup`。需要还原时，退出 CS2 后运行 **一键还原.cmd**。出现错误时运行 **一键检查.cmd**，保留完整报告；不要自行跳过文件校验。
 
-- 压枪轨迹跟随 Bot；经过的轨迹点消失，停火后绿色提示点回到起点。
-- 两种绘制方式：第一版使用历史屏幕投影，第二版使用引擎投影的三维轨迹。
-- 显示时机可选：持续显示、开火后显示、看见 Bot 时显示。
-- 支持头部、脖子、身体目标，以及默认关闭的本地自瞄测试开关。
-- 子弹时间、屏幕晃动、轨迹总开关与武器选择可在地图菜单中调整。
-- 14 把武器、16 套轨迹；AUG、SG 553 的开镜与不开镜分别适配。
-- 安装前检查地图版本、文件校验、旧备份、占用与权限，并提供分类错误提示。
+## 地图更新后怎么办
 
-支持武器：AK-47、M4A1-S、M4A4、Galil AR、FAMAS、AUG、SG 553、MAC-10、MP9、MP7、MP5-SD、UMP-45、P90、PP-Bizon。CZ75 未适配；M4A1-S 使用消音器，FAMAS 使用全自动。
+本版读取本机已经下载的原地图，验证全部原有资源，再生成与它匹配的训练补丁。兼容的独立资源更新和脚本更新通常不需要重新下载补丁：**退出 CS2，再运行启动训练.cmd** 即会检查并按需重新安装。地图订阅与下载更新仍由 Steam 负责。
 
-## 本次公开的版本
+已验证 2026-10-09 和 2026-10-13 两版原图。适配要求训练接入点唯一匹配、接口仍然存在、训练场景本体属于已验证版本。作者更改接口或场景结构、文件损坏、未知第三方修改时，安装器会报出具体原因并停止。**自动适配不保证支持将来的任意改版。**
 
-初始公开版本固定对应 **2026.10.10-integrated-6**，即指定的历史 `5EHub-Recoil-Patch.zip`，适配 2026-10-09 版原地图。发布附件保持原 ZIP 字节不变。
+原图已有数据卷不改写，新增补丁使用空闲分卷；原图索引有备份。检测到地图更新时旧备份归档，安装失败执行回滚。本机生成缓存位于 `%LOCALAPPDATA%/5EHub-Recoil-Patch/adapted`。
 
-```text
-SHA-256
-0f1d3c886c616487973f85550240def2cc9a593cb3001ce036b85f8eee6c7d6a
-```
+## 训练功能
 
-地图源码已与 ZIP 中的编译脚本核对；辅助程序的主要字节码已与源码核对，比较时忽略源码路径及行号。证据见 [release/source-verification.json](release/source-verification.json)。**本版本没有加入后续未发布的地图退出保护修改。**
+- 轨迹跟随移动 Bot；经过的点消失，停火后绿点回到起点。
+- 第一版、第二版绘制可切换；显示时机可选持续、开火后、看见 Bot 时显示。
+- 头部、脖子、身体目标可切换；自瞄测试默认关闭。
+- 子弹时间 0.1–1 倍速、屏幕晃动、轨迹开关、Bot 无敌与参数记忆。
+- 屏幕晃动按钮同步实际控制台参数；辅助程序需要持续运行。
+- 15 把武器、17 套轨迹：AK-47、M4A1-S、M4A4、Galil AR、FAMAS、AUG、SG 553、MAC-10、MP9、MP7、MP5-SD、UMP-45、P90、PP-Bizon、Dual Berettas。
+- AUG、SG 553 开镜独立适配；双枪单独处理实时后坐力，不改变其他武器的绿点逻辑。FAMAS 使用全自动；CZ75 未适配。
 
 ## 辅助程序与使用范围
 
-`5EHubAssist.exe` 的完整项目源码位于 [tools/5ehub_view_bridge.py](tools/5ehub_view_bridge.py)。它连接游戏原生的本机控制台接口，读取控制台返回的视角数据，并同步绿色提示点校正和屏幕晃动设置；源码没有游戏内存读取、内存写入、DLL 注入或驱动加载实现。
+`5EHubAssist.exe` 连接游戏提供的本机控制台，读取控制台输出的视角数据并同步设置。本项目源码没有游戏进程内存读写、DLL 注入、驱动加载实现。
 
-**此历史版本只在游戏控制台断开后退出，离开训练地图不保证退出。**训练结束后请完全关闭 CS2，确认辅助程序已结束，再从 Steam 正常启动游戏。启动器会为新启动的训练游戏添加 `-insecure`；本版本连接已有游戏时只检查控制台端口，尚未严格检查 `-insecure`。
+本版核对控制台所属 CS2 进程、`-insecure` 参数和本机 `5e_aimhub` 会话；通过带新鲜随机标记的请求确认训练状态后才发送同步指令。离开训练地图、断开连接或状态无法验证时退出。不要用于线上对局，也不要把退出检查理解为反作弊认证。**没有经过 Valve 的反作弊安全认证，不能承诺任何反作弊零风险。**发布包中历史保留的空白 TXT 文件名也不构成这种承诺。
 
-项目用于本机训练。没有 Valve、5E 或其他平台的反作弊认证，也不能承诺“不会触发任何反作弊”。历史 ZIP 中同名空 TXT 是原包内容，文件名不是安全保证。
+## 源码、构建与核验
 
-## 源码与构建
+- [构建与测试说明](docs/BUILD.md)：两个 EXE 的源代码、已发布扩展、适配规则与安装器。
+- [版本与校验记录](release/source-verification.json)：源码和本次 ZIP 的对应关系。
+- [本次发布说明](release/NOTES.md)。旧 integrated-6 版本保留在历史标签与发布页中。
+- [第三方内容说明](THIRD_PARTY_NOTICES.md)。MIT 仅覆盖本项目原创内容；原图、原脚本和 RecoilMaster 资源属于其作者。
 
-| 路径 | 内容 |
-| --- | --- |
-| `src/diagnostics/` | 轨迹绘制、训练菜单、子弹时间及校准脚本 |
-| `data/calibration/` | 各武器的后坐力与显示校准数据 |
-| `tools/5ehub_view_bridge.py` | 发布包辅助 EXE 对应的源码 |
-| `installer/` | 从指定 ZIP 原样提取的安装、还原、启动脚本 |
-| `tools/build.py` | 从本机原地图生成脚本、编译并打包 |
-| `release/` | 历史发布清单和源码一致性记录 |
+本次安装包 SHA-256：
 
-构建需要 Windows、Python 3.13、CS2 Workshop Tools、Source 2 Viewer CLI，以及本机安装的对应版本 5EHub 和 RecoilMaster。完整步骤见 [构建说明](docs/BUILD.md)。原地图完整源码、地图数据卷、账号信息和本机运行日志不提交到此仓库。
-
-## 已知限制
-
-第一版绘制需要选择与游戏一致的分辨率，部分电脑可能仍有错位。正常速度下绿色点可能存在轻微延迟或跳动。轨迹提示不能保证随机散布、停火续射或任意设置下的子弹逐发落在同一点。地图更新后如校验不匹配，请使用匹配版本的补丁，不要绕过校验。
-
-## 许可与致谢
-
-项目原创扩展和工具使用 [MIT 许可](LICENSE)。5EHub 原地图、RecoilMaster 参考与资源、Valve 内容及第三方运行时保留各自权利，见 [第三方说明](THIRD_PARTY_NOTICES.md)。
+```text
+824312fb133abd2a71648574fd2a143dd39fb747ad3a1dd4c6cfb18d42e6fca8
+```

@@ -94,7 +94,7 @@ registerMenuProvider(player=>{
         const selected=part=>(__5ehubRmPart===part?"✓ ":"")+__codexAimPartNames[part];
         return {
             title:"自瞄与目标 · "+(__5ehubAuto?"开启":"关闭")+" · "+__codexAimPartNames[__5ehubRmPart],
-            items:[["自瞄："+(__5ehubAuto?"开启":"关闭"),...(__5ehubDisplay==="screen"?["画面适配"]:[])],[selected("head"),selected("neck")],[selected("chest"),"返回主菜单"],["选择武器","轨迹显示："+(__5ehubRmGuideEnabled?"开启":"关闭")],["屏幕晃动："+(__5ehubScreenShake?"开启":"关闭")],["绘制切换："+(__5ehubDrawingVersion()===1?"第一版":"第二版")],["显示时机："+__codexGuideWhenNames[__5ehubGuideWhen]]],
+            items:[["自瞄："+(__5ehubAuto?"开启":"关闭"),...(__5ehubDisplay==="screen"?["画面适配"]:[])],[selected("head"),selected("neck")],[selected("chest"),"返回主菜单"],["选择武器","轨迹显示："+(__5ehubRmGuideEnabled?"开启":"关闭")],["屏幕晃动："+(__5ehubScreenShake?"开启":"关闭"),"Bot 无敌："+(__5ehubBotInvincible?"开启":"关闭")],["绘制切换："+(__5ehubDrawingVersion()===1?"第一版":"第二版")],["显示时机："+__codexGuideWhenNames[__5ehubGuideWhen]]],
             footer:__5ehubDisplay==="world"?"画面自动适配；目标部位同时用于自瞄与轨迹。":"开火时自动瞄准并压枪；目标部位同时用于轨迹。",
             onSelect:(row,col)=>{
                 if(row===0&&col===0)__5ehubAuto=!__5ehubAuto;
@@ -106,6 +106,7 @@ registerMenuProvider(player=>{
                 else if(row===3&&col===0){__codexGuideWeaponPage=0;player.ui.currentMenuId="codexGuideWeapon";}
                 else if(row===3&&col===1){__5ehubRmGuideEnabled=!__5ehubRmGuideEnabled;if(!__5ehubRmGuideEnabled)__5ehubRmHide();}
                 else if(row===4&&col===0)__5ehubSetScreenShake(!__5ehubScreenShake);
+                else if(row===4&&col===1)__5ehubSetBotInvincible(!__5ehubBotInvincible);
                 else if(row===5&&col===0)player.ui.currentMenuId="codexDrawingVersion";
                 else if(row===6&&col===0)player.ui.currentMenuId="codexGuideWhen";
                 return false;

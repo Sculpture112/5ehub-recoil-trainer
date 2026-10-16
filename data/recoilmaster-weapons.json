@@ -133,12 +133,14 @@
       "silenced": false
     },
     {
-      "key": "weapon_cz75a",
-      "nativeWeapon": "weapon_cz75a",
-      "label": "CZ75-Auto",
-      "shots": 12,
+      "key": "weapon_elite",
+      "nativeWeapon": "weapon_elite",
+      "label": "双枪（Dual Berettas）",
+      "shots": 30,
       "scoped": false,
-      "silenced": false
+      "silenced": false,
+      "semiAuto": true,
+      "cycleTime": 0.12
     }
   ],
   "excludedProfiles": [

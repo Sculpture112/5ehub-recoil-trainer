@@ -49,7 +49,7 @@ async function __5ehubCalibrationStart(weapon,run){
     const player=PlayerMgr.resolveUser(),pawn=player?.getPawn();if(!pawn?.IsAlive())throw Error("No live player");
     if(__5ehubCalibration)throw Error("Cancel previous calibration first");
     const rig={weapon:spec.nativeWeapon,profile:spec.key,run:run||"1",origin:{x:96,y:0,z:0},view:{pitch:0,yaw:180,roll:0},ready:false,shots:0,records:[],
-        saved:{origin:pawn.GetAbsOrigin(),weapon:player.primaryWeapon,secondary:player.secondaryWeapon,view:pawn.GetEyeAngles(),noSpread:Settings.get("accuracyNospread"),infBullet:Settings.get("infBullet"),screenShake:__5ehubScreenShake,auto:__5ehubAuto,bots:[]}};
+        saved:{origin:pawn.GetAbsOrigin(),weapon:player.primaryWeapon,secondary:player.secondaryWeapon,active:pawn.GetActiveWeapon()?.GetData().GetName(),view:pawn.GetEyeAngles(),noSpread:Settings.get("accuracyNospread"),infBullet:Settings.get("infBullet"),screenShake:__5ehubScreenShake,auto:__5ehubAuto,bots:[]}};
     __5ehubCalibration=rig;__5ehubAuto=false;__5ehubRmResetShots();
     __5ehubSetScreenShake(false);
     player.ui?.hide();
@@ -83,7 +83,7 @@ async function __5ehubCalibrationCancel(){
     __5ehubSetScreenShake(rig.saved.screenShake);
     for(const entry of rig.saved.bots)if(entry.bot.IsValid()&&entry.bot.IsAlive()){entry.bot.SetMaxHealth(entry.max);entry.bot.SetHealth(entry.health);}
     const player=PlayerMgr.resolveUser();
-    if(player){player.setSecondaryWeapon(rig.saved.secondary);Settings.set("secondaryWeapon",rig.saved.secondary);await player.updateWeapon(rig.saved.weapon);player.getPawn()?.Teleport({position:rig.saved.origin,velocity:{x:0,y:0,z:0}});player.getPawn()?.SetEyeAngles(rig.saved.view);}
+    if(player){player.setSecondaryWeapon(rig.saved.secondary);Settings.set("secondaryWeapon",rig.saved.secondary);await player.updateWeapon(rig.saved.weapon);const pawn=player.getPawn(),active=pawn?.FindWeapon(rig.saved.active);if(active)pawn.SwitchToWeapon(active);pawn?.Teleport({position:rig.saved.origin,velocity:{x:0,y:0,z:0}});pawn?.SetEyeAngles(rig.saved.view);}
     __codexApplyBulletTime();
     __5ehubCalibrationLog({event:"cancelled",weapon:rig.weapon,run:rig.run});
 }

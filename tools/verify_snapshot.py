@@ -1,4 +1,4 @@
-"""Verify source/catalog consistency and optionally the exact historical ZIP."""
+"""Verify the published adaptive source and, optionally, its exact release ZIP."""
 import argparse
 import hashlib
 import json
@@ -11,57 +11,70 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def executable_code(code):
-    if isinstance(code, types.CodeType):
-        return (code.co_code, tuple(executable_code(x) for x in code.co_consts), code.co_names,
-                code.co_varnames, code.co_argcount, code.co_posonlyargcount, code.co_kwonlyargcount,
-                code.co_flags, code.co_freevars, code.co_cellvars, code.co_exceptiontable)
-    return code
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--zip', type=Path)
-    args = parser.parse_args()
-    manifest = json.loads((ROOT / 'release/manifest.json').read_text(encoding='utf-8'))
-    evidence = json.loads((ROOT / 'release/source-verification.json').read_text(encoding='utf-8'))
-    profiles = json.loads((ROOT / 'data/calibration/weapon-profiles.json').read_text(encoding='utf-8'))
-    display = json.loads((ROOT / 'data/calibration/fixed-camera-display.json').read_text(encoding='utf-8'))['profiles']
+def executable_code(value):
+    if isinstance(value, types.CodeType):
+        return (value.co_code, tuple(executable_code(x) for x in value.co_consts), value.co_names,
+                value.co_varnames, value.co_argcount, value.co_posonlyargcount, value.co_kwonlyargcount,
+                value.co_flags, value.co_freevars, value.co_cellvars, value.co_exceptiontable)
+    return value
+
+
+def verify(folder=ROOT, archive_path=None):
+    manifest = json.loads((folder / 'release/manifest.json').read_text(encoding='utf-8'))
+    evidence = json.loads((folder / 'release/source-verification.json').read_text(encoding='utf-8'))
+    assert manifest['version'] == evidence['version']
+    assert manifest == json.loads((folder / 'release/known-manifest.json').read_text(encoding='utf-8'))
+    for name, expected in evidence['sourceFilesSha256'].items():
+        assert digest((folder / name).read_bytes()) == expected, name
+    profiles = json.loads((folder / 'data/calibration/weapon-profiles.json').read_text(encoding='utf-8'))
+    display = json.loads((folder / 'data/calibration/fixed-camera-display.json').read_text(encoding='utf-8'))['profiles']
     assert {name: len(p['recoil']) for name, p in profiles.items()} == manifest['weaponProfiles']
     assert {name: len(p) for name, p in display.items()} == manifest['weaponProfiles']
-    assert manifest['version'] == evidence['version'] == '2026.10.10-integrated-6'
-    helper_source = (ROOT / 'tools/5ehub_view_bridge.py').read_text(encoding='utf-8')
-    assert 'TrainingGuard' not in helper_source
-    assert 'akbridgeguard' not in (ROOT / 'src/diagnostics/5ehub-local-guide.js').read_text(encoding='utf-8')
-    assert 'BV1PBp46rEYw' in (ROOT / 'README.md').read_text(encoding='utf-8')
-    if args.zip:
-        assert hashlib.sha256(args.zip.read_bytes()).hexdigest() == evidence['zipSha256'], 'Not the selected historical ZIP'
-        with zipfile.ZipFile(args.zip) as archive:
-            assert archive.testzip() is None
-            prefix = archive.namelist()[0].split('/')[0] + '/'
-            assert json.loads(archive.read(prefix + 'manifest.json')) == manifest
-            for path in (ROOT / 'installer').iterdir():
-                if path.is_file():
-                    assert archive.read(prefix + path.name) == path.read_bytes(), path.name
-            from PyInstaller.archive.readers import CArchiveReader
-            with tempfile.TemporaryDirectory() as folder:
-                exe = Path(folder) / 'helper.exe'
-                exe.write_bytes(archive.read(prefix + 'helper/5EHubAssist.exe'))
-                assert hashlib.sha256(exe.read_bytes()).hexdigest() == manifest['helper']['sha256']
-                embedded = marshal.loads(CArchiveReader(str(exe)).extract('5ehub_view_bridge'))
-                assert executable_code(embedded) == executable_code(compile(helper_source, '<snapshot>', 'exec'))
-            import patch_5ehub_workshop_package as vpk
-            with tempfile.TemporaryDirectory() as folder:
-                directory = Path(folder) / '3086023598_dir.vpk'
-                directory.write_bytes(archive.read(prefix + 'payload/3086023598_dir.vpk'))
-                _, entries, _, _, _ = vpk.parse_directory(directory)
-                entry = entries[vpk.ORIGINAL_SCRIPT_KEY]
-                data = archive.read(prefix + 'payload/3086023598_002.vpk')
-                script = entry.preload_bytes + data[entry.offset:entry.offset + entry.length]
-                assert hashlib.sha256(script).hexdigest() == evidence['scriptPayloadSha256']
-    print('PASS: integrated-6 source snapshot, 16 weapon profiles, tutorial link' +
-          (', exact ZIP/installer/helper/script correspondence' if args.zip else ''))
+    recipe = json.loads((folder / 'data/adaptive-recipe.json').read_text(encoding='utf-8'))
+    assert len(recipe['plans']) == 2 and all(len(p['patches']) == 10 for p in recipe['plans'])
+    assert recipe['protectedResources']['maps/5e_aimhub.vpk']
+    extension = (folder / 'src/extension.js').read_bytes()
+    assert digest(extension) == evidence['extensionSha256']
+    assert digest(extension) == manifest['adaptive']['files']['adaptive/extension.js']
+    assert digest((folder / 'data/adaptive-recipe.json').read_bytes()) == manifest['adaptive']['files']['adaptive/recipe.json']
+    assert 'BV1PBp46rEYw' in (folder / 'README.md').read_text(encoding='utf-8')
+    if not archive_path:
+        return
+    assert digest(archive_path.read_bytes()) == evidence['zipSha256'], 'Not the selected release ZIP'
+    assert archive_path.stat().st_size == evidence['zipBytes']
+    with zipfile.ZipFile(archive_path) as archive:
+        assert archive.testzip() is None
+        assert json.loads(archive.read('manifest.json')) == manifest
+        assert archive.read('known-manifest.json') == archive.read('manifest.json')
+        assert archive.read('adaptive/extension.js') == extension
+        assert archive.read('adaptive/recipe.json') == (folder / 'data/adaptive-recipe.json').read_bytes()
+        for source in (folder / 'installer').iterdir():
+            if source.is_file():
+                assert archive.read(source.name) == source.read_bytes(), source.name
+        for name, expected in manifest['adaptive']['files'].items():
+            assert digest(archive.read(name)) == expected, name
+        from PyInstaller.archive.readers import CArchiveReader
+        with tempfile.TemporaryDirectory() as temporary:
+            for exe, module, expected in (
+                (manifest['helper']['path'], '5ehub_view_bridge', manifest['helper']['sha256']),
+                (manifest['adaptive']['executable'], '5ehub_adaptive', manifest['adaptive']['sha256']),
+            ):
+                data = archive.read(exe)
+                assert digest(data) == expected, exe
+                path = Path(temporary) / Path(exe).name
+                path.write_bytes(data)
+                embedded = marshal.loads(CArchiveReader(str(path)).extract(module))
+                source = (folder / 'tools' / (module + '.py')).read_text(encoding='utf-8-sig')
+                assert executable_code(embedded) == executable_code(compile(source, '<source>', 'exec')), module
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--zip', type=Path)
+    args = parser.parse_args()
+    verify(archive_path=args.zip)
+    print('PASS: adaptive source, 17 profiles, tutorial' + (', exact release ZIP and executable code' if args.zip else ''))

@@ -6,11 +6,21 @@ permissions:
   contents: read
 jobs:
   source:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-build.txt
       - run: python -m compileall -q tools
       - run: python tools/verify_snapshot.py
+      - run: python tools/verify_5ehub_helper_lifecycle.py
+      - run: python tools/verify_5ehub_native_punch.py
+      - run: node --check src/extension.js
+      - run: node tools/verify_preferences.cjs
+      - run: node tools/verify_bot_invincible.cjs
+      - run: node tools/verify_weapon_cue_isolation.cjs
